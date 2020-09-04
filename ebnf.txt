@@ -29,7 +29,8 @@
 <declaration>   ::= <ident> [ ':' <type-name> ] [ ':=' <expr> ]
 <assignment>    ::= <ident> ':=' <expr>
 <if>            ::= 'if' <bool> <scope-dec> { 'elif' <bool> <scope-dec> } [ 'else' <scope-dec> ]
-<stmt>          ::= <declaration> | <assignment> | <func-call> | 
+<import>        ::= 'import' <ident>
+<stmt>          ::= <declaration> | <assignment> | <func-call> | <if> | <import>
 <scope-dec>     ::= '{' { <stmt> ';' } '}'
 
 <class>         ::= 'class' <ident> <scope-dec>

@@ -16,8 +16,9 @@ int main(int argc, char **args) {
         token_list_t tokens = tokenizer.listFromString(string.fromCharArray(source_arr));
         for(int i = 0; i < tokens.length; i++) {
             printf(
-                "Token { index = %d, string = %s, type = %d\n", 
-                tokens.arr[i].index, tokens.arr[i].text.c_str, tokens.arr[i].kind
+                "Token { index = %d, string = %s, type = %s }\n", 
+                tokens.arr[i].index, tokens.arr[i].text.c_str,
+                tokenizer.kindToStr(tokens.arr[i].kind).c_str
             );
         }
     }

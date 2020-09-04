@@ -22,11 +22,14 @@ typedef struct {
 
 extern token_list_t tokenizer__appendToken(token_t tok, token_list_t list);
 extern token_list_t tokenizer__listFromString(string_t str);
+extern string_t tokenizer__kindToStr(token_kind_t kind);
 
 static const struct {
     token_list_t (*appendToken)(token_t tok, token_list_t list);
     token_list_t (*listFromString)(string_t str);
+    string_t (*kindToStr)(token_kind_t kind);
 } tokenizer = {
     tokenizer__appendToken,
-    tokenizer__listFromString
+    tokenizer__listFromString,
+    tokenizer__kindToStr
 };

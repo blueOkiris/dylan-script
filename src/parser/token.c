@@ -86,3 +86,12 @@ token_list_t tokenizer__listFromString(string_t str) {
 
     return new_list;
 }
+
+string_t tokenizer__kindToStr(token_kind_t kind) {
+    switch(kind) {
+        case STRING:
+            return string.fromCharArray("STRING");
+        default:
+            return string.fromCharArray("UNKNOWN");
+    }
+}

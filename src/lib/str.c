@@ -17,7 +17,7 @@ string_t string__instance() {
     strings_g[num_strings_g][0] = '\0';
     num_strings_g++;
 
-    return (string_t) { num_strings_g - 1, strings_g[num_strings_g], 0 };
+    return (string_t) { num_strings_g - 1, strings_g[num_strings_g - 1], 0 };
 }
 
 string_t string__fromCharArray(const char *source) {

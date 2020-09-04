@@ -1,22 +1,19 @@
 <sum-op>        ::= '+' | '-'
 <mul-op>        ::= '*' | '/' | '%'
 <exp-op>        ::= '^'
-<unary-op>      ::= '+' | '-'
 <bool-val>      ::= 'true' | 'false'
 <cond-op>       ::= '&&' | '||'
 <bool>          ::= <bool-val> | <bool> [ <cond-op> <bool> ]
 <ident>         ::= /[A-Za-z_]+[A-Za-z0-9_]*/ | <expr> '.' <ident>
 <string>        ::= /'(\\.|[^'\\])*'/
 <integer>       ::= /[0-9]+/
-<float>         ::= /[0-9]+/ '.' /[0-9]*/ | '.' /[0-9]+/
-<sci>           ::= ( <integer> | <float> ) 'e' [ <unary-op> ] <integer>
+<float>         ::= /[0-9]+/ '.' /[0-9]*/
+<sci>           ::= /[0-9]+/ [ '.' /[0-9]*/ ] +/'e' [ ( '+' | '-' ) ] <integer>
 <number>        ::= <integer> | <float> | <sci>
 <list-body>     ::= '{' [ <expr> { ',' <expr> } ] '}'
 <list>          ::= '<' <type-name> '>' <list-body>
 <map-body>      ::= '{' [ <expr> ':' <expr> { ',' <expr> ':' <expr } ] '}'
 <map>           ::= '<' <type-name> ',' <type-name> '>' <map-body>
-<l-par>         ::= '('
-<r-par>         ::= ')'
 <type-name>     ::= [ 'ref' ] { '*' } <ident>
 
 <term>          ::= <ident> | <list> | <map> | <bool> | <string> | <func-call> | <number> | '(' <pow-exp> ')'
@@ -24,7 +21,7 @@
 <mul-exp>       ::= <pow-exp> { <mul-op> <pow-exp> }
 <expr>          ::= <mul-exp> { <sum-op> <mul-exp> }
 <arg-body>      ::= [ 'ref' ] { '&' } <expr> { ',' <expr> }
-<func-call>     ::= <ident> ( '()' | <l-par> <list-body> <r-par> )
+<func-call>     ::= <ident> ( '(' [ <list-body> <r-par> ] ')' )
 
 <declaration>   ::= <ident> [ ':' <type-name> ] [ ':=' <expr> ]
 <assignment>    ::= <ident> ':=' <expr>

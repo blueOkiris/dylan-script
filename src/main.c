@@ -11,7 +11,7 @@ int main(int argc, char **args) {
         size_t source_len = ftell(source_file);
         rewind(source_file);
         char source_arr[source_len + 1];
-        fgets(source_arr, source_len, source_file);
+        fgets(source_arr, source_len + 1, source_file);
 
         token_list_t tokens = tokenizer.listFromString(string.fromCharArray(source_arr));
         for(int i = 0; i < tokens.length; i++) {

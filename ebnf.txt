@@ -2,8 +2,9 @@
 <mul-op>        ::= '*' | '/' | '%'
 <exp-op>        ::= '^'
 <bool-val>      ::= 'true' | 'false'
-<cond-op>       ::= '&&' | '||'
-<bool>          ::= <bool-val> | <bool> [ <cond-op> <bool> ]
+<bool-op>       ::= '&' | '|'
+<cond-op>       ::= '<' | '>' | '>=' | '<=' | '=' | '/='
+<bool>          ::= <bool-val> | <bool> [ <cond-op> <bool> ] | <expr> <cond-op> <expr>
 <ident>         ::= /[A-Za-z_]+[A-Za-z0-9_]*/ | <expr> '.' <ident>
 <string>        ::= /'(\\.|[^'\\])*'/
 <integer>       ::= /[0-9]+/

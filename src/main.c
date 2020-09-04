@@ -13,7 +13,13 @@ int main(int argc, char **args) {
         char source_arr[source_len + 1];
         fgets(source_arr, source_len, source_file);
 
-        token_list_t tokens = tokenizer.treeFromString(string.fromCharArray(source_arr));
+        token_list_t tokens = tokenizer.listFromString(string.fromCharArray(source_arr));
+        for(int i = 0; i < tokens.length; i++) {
+            printf(
+                "Token { index = %d, string = %s, type = %d\n", 
+                tokens.arr[i].index, tokens.arr[i].text.c_str, tokens.arr[i].kind
+            );
+        }
     }
 
     return 0;

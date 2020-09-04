@@ -3,15 +3,9 @@
 #include <str.h>
 
 typedef enum {
-    STRING,
-    INTEGER,
-    SCI_NUM,
-    FLOAT,
-    BOOL_VAL,
-    IDENTIFIER,
-    SUM_OP,
-    MUL_OP,
-    EXP_OP
+    STRING, INTEGER, SCI_NUM, FLOAT, BOOL_VAL, IDENTIFIER,
+    SUM_OP, MUL_OP, EXP_OP, PARENTH, BOOL_OP, COND_OP, COMMA,
+    BRACE, COLON, SEMICOLON
 } token_kind_t;
 
 typedef struct {
@@ -23,13 +17,16 @@ typedef struct {
 typedef struct {
     int index;
     token_t *arr;
-    int size;
+    int length;
 } token_list_t;
 
-extern token_list_t tokenizer__treeFromString(string_t str);
+extern token_list_t tokenizer__appendToken(token_t tok, token_list_t list);
+extern token_list_t tokenizer__listFromString(string_t str);
 
 static const struct {
-    token_list_t (*treeFromString)(string_t str);
+    token_list_t (*appendToken)(token_t tok, token_list_t list);
+    token_list_t (*listFromString)(string_t str);
 } tokenizer = {
-    tokenizer__treeFromString
+    tokenizer__appendToken,
+    tokenizer__listFromString
 };

@@ -2,6 +2,9 @@
 <mul-op>        ::= '*' | '/' | '%'
 <exp-op>        ::= '^'
 <unary-op>      ::= '+' | '-'
+<bool-val>      ::= 'true' | 'false'
+<cond-op>       ::= '&&' | '||'
+<bool>          ::= <bool-val> | <bool> [ <cond-op> <bool> ]
 <ident>         ::= /[A-Za-z_]+[A-Za-z0-9_]*/ | <expr> '.' <ident>
 <string>        ::= /'(\\.|[^'\\])*'/
 <integer>       ::= /[0-9]+/
@@ -9,22 +12,26 @@
 <sci>           ::= ( <integer> | <float> ) 'e' [ <unary-op> ] <integer>
 <number>        ::= <integer> | <float> | <sci>
 <list-body>     ::= '{' [ <expr> { ',' <expr> } ] '}'
-<list>          ::= '<' <ident> '>' <list-body>
+<list>          ::= '<' <type-name> '>' <list-body>
 <map-body>      ::= '{' [ <expr> ':' <expr> { ',' <expr> ':' <expr } ] '}'
-<map>           ::= '<' <ident> ',' <ident> '>' <map-body>
+<map>           ::= '<' <type-name> ',' <type-name> '>' <map-body>
 <l-par>         ::= '('
 <r-par>         ::= ')'
+<type-name>     ::= [ 'ref' ] { '*' } <ident>
 
-<term>          ::= <ident> | <list> | <map> | <string> | <func-call> | <number> | '(' <pow-exp> ')'
+<term>          ::= <ident> | <list> | <map> | <bool> | <string> | <func-call> | <number> | '(' <pow-exp> ')'
 <pow-exp>       ::= <unary-op> <pow-exp> | term [ <exp-op> pow-exp ]
 <mul-exp>       ::= <pow-exp> { <mul-op> <pow-exp> }
 <expr>          ::= <mul-exp> { <sum-op> <mul-exp> }
-<arg-body>      ::= [ 'ref' | 'ptr' ] <expr> { ',' <expr> }
+<arg-body>      ::= [ 'ref' ] { '&' } <expr> { ',' <expr> }
 <func-call>     ::= <ident> ( '()' | <l-par> <list-body> <r-par> )
 
-<declaration>   ::= <ident> [ ':' <ident> ] [ ':=' <expr> ]
+<declaration>   ::= <ident> [ ':' <type-name> ] [ ':=' <expr> ]
 <assignment>    ::= <ident> ':=' <expr>
-<stmt>          ::= <declaration> | <assignment> | <func-call>
+<if>            ::= 'if' <bool> <scope-dec> { 'elif' <bool> <scope-dec> } [ 'else' <scope-dec> ]
+<stmt>          ::= <declaration> | <assignment> | <func-call> | 
 <scope-dec>     ::= '{' { <stmt> ';' } '}'
 
 <class>         ::= 'class' <ident> <scope-dec>
+<def-arg-body>  ::= <ident> [ ':' <type-name> ] { ',' <ident> [ ':' <type-name> ] }
+<func>          ::= 'fn' <ident> '(' [ <def-arg-body> ] ')' <scope-dec>

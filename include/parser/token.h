@@ -19,3 +19,17 @@ typedef struct {
     int index;
     token_kind_t kind;
 } token_t;
+
+typedef struct {
+    int index;
+    token_t *arr;
+    int size;
+} token_list_t;
+
+extern token_list_t tokenizer__treeFromString(string_t str);
+
+static const struct {
+    token_list_t (*treeFromString)(string_t str);
+} tokenizer = {
+    tokenizer__treeFromString
+};

@@ -9,6 +9,8 @@ static int num_strings_g = 0;
 string_t string__instance() {
     if(num_strings_g == 0) {
         strings_g = malloc(sizeof(char **));
+    } else {
+        strings_g = realloc(strings_g, (num_strings_g + 1) * sizeof(char *));
     }
 
     strings_g[num_strings_g] = malloc(1);
@@ -59,6 +61,22 @@ string_t string__appendString(string_t other, string_t source) {
     free(source.c_str);
 
     new_str.length = source.length + other.length;
+    new_str.index = source.index;
+    return new_str;
+}
+
+string_t string__remove(int start_ind, int len, string_t source) {
+    char *new_src = malloc(source.length - len + 1);
+    string_t new_str;
+
+    memcpy(new_src, source.c_str + start_ind, source.length - len);
+    new_src[source.length - len] = '\0';
+
+    new_str.c_str = new_src;
+    strings_g[source.index] = new_src;
+    free(source.c_str);
+
+    new_str.length = source.length - len;
     new_str.index = source.index;
     return new_str;
 }

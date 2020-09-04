@@ -7,6 +7,24 @@
 static token_t **tokens_g = NULL;
 static int num_token_list_g = 0;
 
+token_list_t lexBoolVal(int *ref_i, string_t str, token_list_t list) {
+    token_list_t new_list = list;
+    int start_ind = *ref_i;
+
+    if(str.c_str[*ref_i] == 't') {
+        *ref_i += 3;
+
+        token_t new_tok = (token_t) { string.fromCharArray("true"), start_ind, BOOL_VAL };
+        new_list = tokenizer__appendToken(new_tok, new_list);
+    } else {
+        *ref_i += 4;
+
+        token_t new_tok = (token_t) { string.fromCharArray("false"), start_ind, BOOL_VAL };
+        new_list = tokenizer__appendToken(new_tok, new_list);
+    }
+    return new_list;
+}
+
 token_list_t lexNumber(int *ref_i, string_t str, token_list_t list) {
     token_list_t new_list = list;
     int start_ind = *ref_i;
@@ -97,6 +115,9 @@ token_list_t fromStringHelper(token_list_t list, string_t str) {
             new_list = lexString(&i, str, new_list);
         } else if(str.c_str[i] == '.' || (str.c_str[i] >= '0' && str.c_str[i] <= '9')) {
             new_list = lexNumber(&i, str, new_list);
+        } else if(i + 3 < str.length && 
+                (strncmp("true", str.c_str + i, 4) == 0 || strncmp("false", str.c_str + i, 5) == 0)) {
+            new_list = lexBoolVal(&i, str, new_list);
         }
     }
 
@@ -147,6 +168,8 @@ string_t tokenizer__kindToStr(token_kind_t kind) {
             return string.fromCharArray("SCI_INT");
         case SCI_FLOAT:
             return string.fromCharArray("SCI_FLOAT");
+        case BOOL_VAL:
+            return string.fromCharArray("BOOL_VAL");
         default:
             return string.fromCharArray("UNKNOWN");
     }

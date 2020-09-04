@@ -7,11 +7,12 @@ int main(int argc, char **args) {
         printf("No input file given\n");
     } else {
         FILE *source_file = fopen(args[1], "r");
-        fseek(source_file, 0, SEEK_END);
+        fseek(source_file, 0L, SEEK_END);
         size_t source_len = ftell(source_file);
-        rewind(source_file);
+        fseek(source_file, 0L, SEEK_SET);
         char source_arr[source_len + 1];
-        fgets(source_arr, source_len + 1, source_file);
+        fread(source_arr, 1, source_len, source_file);
+        source_arr[source_len] = '\0';
 
         token_list_t tokens = tokenizer.listFromString(string.fromCharArray(source_arr));
         for(int i = 0; i < tokens.length; i++) {

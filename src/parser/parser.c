@@ -54,6 +54,11 @@ token_tree_t parser__append_child(token_tree_t child, token_tree_t tree) {
 
 // <import> ::= 'import' <ident>
 token_tree_t parse_import(int *ref_i, token_list_t list) {
+    token_tree_t import_tree = parser__new_token_tree();
+    token_t import_token = list.arr[*ref_i];
+    import_token.kind = IMPORT;
+    import_tree.root = import_token;
+
     (*ref_i)++;
     if(*ref_i >= list.length) {
         printf("Parser error: Unexpected EOF in import.\n");
@@ -66,16 +71,41 @@ token_tree_t parse_import(int *ref_i, token_list_t list) {
         );
         exit(-1);
     }
-
-    token_tree_t import_tree = parser__new_token_tree();
-    token_t import_token = list.arr[(*ref_i) - 1];
-    import_token.kind = IMPORT;
-    import_tree.root = import_token;
     token_tree_t ident_tree = parser__new_token_tree();
     token_t ident_token = list.arr[*ref_i];
     ident_tree.root = ident_token;
+
     import_tree = parser__append_child(ident_tree, import_tree);
     return import_tree;
+}
+
+// <struct> ::= 'struct' <ident> <scope-dec>
+token_tree_t parse_struct(int *ref_i, token_list_t list) {
+    token_tree_t struct_tree = parser__new_token_tree();
+    token_t struct_token = list.arr[*ref_i];
+    struct_token.kind = STRUCT;
+    struct_tree.root = struct_token;
+
+    (*ref_i)++;
+    if(*ref_i >= list.length) {
+        printf("Parser error: Unexpected EOF in import.\n");
+        exit(-1);
+    } else if(list.arr[*ref_i].kind != IDENTIFIER) {
+        printf(
+            "Parser error: Expected identifier, recieved %s : %s\n.",
+            list.arr[*ref_i].text.c_str,
+            tokenizer.kind_to_str(list.arr[*ref_i].kind).c_str
+        );
+        exit(-1);
+    }
+    token_tree_t ident_tree = parser__new_token_tree();
+    token_t ident_token = list.arr[*ref_i];
+    ident_tree.root = ident_token;
+
+    //token_tree_t scopDec = parse_scope(ref_i, list);
+    struct_tree = parser__append_child(ident_tree, struct_tree);
+    //struct_tree = parser__append_child(ident_tree, struct_tree);
+    return struct_tree;
 }
 
 // <program> ::= { ( <import> | <struct> | <func-def> ) }
@@ -99,7 +129,7 @@ token_tree_t parser__parse_program(token_list_t list) {
         } else if(strcmp(list.arr[i].text.c_str, "fn") == 0) {
             //new_tree = parser__append_child(parse_function(&i, list), new_tree);
         } else if(strcmp(list.arr[i].text.c_str, "struct") == 0) {
-            //new_tree = parser__append_child(parse_struct(&i, list), new_tree);
+            new_tree = parser__append_child(parse_struct(&i, list), new_tree);
         }
     }
 

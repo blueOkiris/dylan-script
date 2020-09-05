@@ -347,15 +347,18 @@ token_tree_t parser__parse_program(token_list_t list) {
 }
 
 void parser__print_tree(token_tree_t tree, int tab_ind) {
-    for(int i = 0; i < tab_ind; i++) {
-        printf("|--");
+    if(tree.root.kind == PROGRAM) {
+        printf("Program:\n");
+    } else {
+        for(int i = 0; i < tab_ind; i++) {
+            printf("|--");
+        }
+        printf(
+            "%s : %s\n", 
+            tree.root.text.c_str,
+            tokenizer.kind_to_str(tree.root.kind).c_str
+        );
     }
-    printf(
-        "%s : %s\n", 
-        tree.root.text.c_str,
-        tokenizer.kind_to_str(tree.root.kind).c_str
-    );
-
     for(int i = 0; i < tree.num_children; i++) {
         parser__print_tree(((token_tree_t *) tree.children)[i], tab_ind + 1);
     }

@@ -8,7 +8,7 @@ int main(int argc, char **args) {
         printf("No input file given\n");
         return -1;
     }
-    
+
     FILE *source_file = fopen(args[1], "r");
     fseek(source_file, 0L, SEEK_END);
     size_t source_len = ftell(source_file);
@@ -32,10 +32,6 @@ int main(int argc, char **args) {
 
     token_tree_t ast = parser.parse_program(tokens);
     parser.print_tree(ast, 0);
-
-    // Free up some space before running the interpreter
-    string.free_all();
-    tokenizer.free_all();
 
     return 0;
 }

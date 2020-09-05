@@ -28,9 +28,11 @@
 <assignment>    ::= <ident> ':=' <expr>
 <if>            ::= 'if' <bool> <scope-dec> { 'elif' <bool> <scope-dec> } [ 'else' <scope-dec> ]
 <import>        ::= 'import' <ident>
-<stmt>          ::= <declaration> | <assignment> | <func-call> | <if> | <import>
+<stmt>          ::= <declaration> | <assignment> | <func-call> | <if> | <import> | <func-def>
 <scope-dec>     ::= '{' { <stmt> ';' } '}'
 
-<class>         ::= 'class' <ident> <scope-dec>
+<struct>         ::= 'struct' <ident> <scope-dec>
 <def-arg-body>  ::= <ident> [ ':' <type-name> ] { ',' <ident> [ ':' <type-name> ] }
-<func>          ::= 'fn' <ident> '(' [ <def-arg-body> ] ')' '->' <type-name> <scope-dec>
+<func-def>      ::= 'fn' <ident> '(' [ <def-arg-body> ] ')' '->' <type-name> <scope-dec>
+
+<program>       ::= { ( <import> ';' | <struct> | <func-def> ) }

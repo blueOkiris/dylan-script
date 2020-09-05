@@ -102,9 +102,10 @@ token_tree_t parse_struct(int *ref_i, token_list_t list) {
     token_t ident_token = list.arr[*ref_i];
     ident_tree.root = ident_token;
 
-    //token_tree_t scopDec = parse_scope(ref_i, list);
+    //token_tree_t scop_dec = parse_struct_body(ref_i, list);
+    
     struct_tree = parser__append_child(ident_tree, struct_tree);
-    //struct_tree = parser__append_child(ident_tree, struct_tree);
+    //struct_tree = parser__append_child(scop_dec, struct_tree);
     return struct_tree;
 }
 

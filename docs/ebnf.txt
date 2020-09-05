@@ -31,6 +31,7 @@
 <import>        ::= 'import' <ident>
 <stmt>          ::= <declaration> | <assignment> | <func-call> | <if> | <import> | <func-def>
 <scope-dec>     ::= '{' { <stmt> ';' } '}'
+<struct-body>   ::= '{' { ( <declaration> | <assignment> ) ';' } '}'
 
 <struct>         ::= 'struct' <ident> <scope-dec>
 <def-arg-body>  ::= <ident> [ ':' <type-name> ] { ',' <ident> [ ':' <type-name> ] }

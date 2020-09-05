@@ -285,17 +285,18 @@ token_tree_t parser__parse_program(token_list_t list) {
 
     for(int i = 0; i < list.length; i++) {
         // All start with idents
-        /*if(list.arr[i].kind != IDENTIFIER
+        if(list.arr[i].kind != IDENTIFIER
                 || (strcmp(list.arr[i].text.c_str, "struct") != 0
                     && strcmp(list.arr[i].text.c_str, "fn") != 0
                     && strcmp(list.arr[i].text.c_str, "import") != 0)) {
             printf(
-                "Parser error: %s : %s not 'struct,' 'fn,' or 'import'.\n",
+                "Parser error: '%s' : %s not 'struct,' 'fn,' or 'import'.\n",
                 list.arr[i].text.c_str,
                 tokenizer.kind_to_str(list.arr[i].kind).c_str
             );
+            parser__print_tree(new_tree, 0);
             exit(-1);
-        } else*/ if(strcmp(list.arr[i].text.c_str, "import") == 0) {
+        } else if(strcmp(list.arr[i].text.c_str, "import") == 0) {
             new_tree = parser__append_child(parse_import(&i, list), new_tree);
         } else if(strcmp(list.arr[i].text.c_str, "fn") == 0) {
             new_tree = parser__append_child(parse_function(&i, list), new_tree);

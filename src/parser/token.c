@@ -60,6 +60,18 @@ string_t tokenizer__kind_to_str(token_kind_t kind) {
             return string.from_char_array("IDENTIFIER");
         case MEMBER_OP:
             return string.from_char_array("MEMBER_OP");
+        case SUM_OP:
+            return string.from_char_array("SUM_OP");
+        case MUL_OP:
+            return string.from_char_array("MUL_OP");
+        case EXP_OP:
+            return string.from_char_array("EXP_OP");
+        case BOOL_OP:
+            return string.from_char_array("BOOL_OP");
+        case COND_OP:
+            return string.from_char_array("COND_OP");
+        case ASSIGNMENT_OP:
+            return string.from_char_array("ASSIGNMENT_OP");
         default:
             return string.from_char_array("UNKNOWN");
     }

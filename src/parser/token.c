@@ -93,6 +93,12 @@ string_t tokenizer__kind_to_str(token_kind_t kind) {
             return string.from_char_array("STRUCT");
         case STRUCT_BODY:
             return string.from_char_array("STRUCT_BODY");
+        case DECLARATION:
+            return string.from_char_array("DECLARATION");
+        case TYPE_NAME:
+            return string.from_char_array("TYPE_NAME");
+        case REF_KEYWD:
+            return string.from_char_array("REF_KEYWD");
         
         default:
             return string.from_char_array("UNKNOWN");

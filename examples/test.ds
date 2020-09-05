@@ -1,8 +1,8 @@
 import io
 
 struct test {
-    text : str
-    num : int := 0
+    text : str;
+    num : int;
 }
 
 fn main() -> null {

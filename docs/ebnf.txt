@@ -25,7 +25,7 @@
 <arg-body>      ::= [ 'ref' ] { '&' } <expr> { ',' <expr> }
 <func-call>     ::= <ident> ( '(' [ <list-body> <r-par> ] ')' )
 
-<declaration>   ::= <ident> [ ':' <type-name> ] [ ':=' <expr> ]
+<declaration>   ::= <ident> ':' <type-name> [ ':=' <expr> ]
 <assignment>    ::= <ident> ':=' <expr>
 <if>            ::= 'if' <bool> <scope-dec> { 'elif' <bool> <scope-dec> } [ 'else' <scope-dec> ]
 <while>         ::= 'while' <bool> <scope-dec>

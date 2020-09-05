@@ -14,12 +14,14 @@ int main(int argc, char **args) {
         fread(source_arr, 1, source_len, source_file);
         source_arr[source_len] = '\0';
 
-        token_list_t tokens = tokenizer.listFromString(string.fromCharArray(source_arr));
+        token_list_t tokens = tokenizer.list_from_string(
+            string.from_char_array(source_arr)
+        );
         for(int i = 0; i < tokens.length; i++) {
             printf(
                 "Token { index = %d, string = %s, type = %s }\n", 
                 tokens.arr[i].index, tokens.arr[i].text.c_str,
-                tokenizer.kindToStr(tokens.arr[i].kind).c_str
+                tokenizer.kind_to_str(tokens.arr[i].kind).c_str
             );
         }
     }

@@ -20,16 +20,16 @@ typedef struct {
     int length;
 } token_list_t;
 
-extern token_list_t tokenizer__appendToken(token_t tok, token_list_t list);
-extern token_list_t tokenizer__listFromString(string_t str);
-extern string_t tokenizer__kindToStr(token_kind_t kind);
+extern token_list_t tokenizer__append_token(token_t tok, token_list_t list);
+extern token_list_t tokenizer__list_from_string(string_t str);
+extern string_t tokenizer__kind_to_str(token_kind_t kind);
 
 static const struct {
-    token_list_t (*appendToken)(token_t tok, token_list_t list);
-    token_list_t (*listFromString)(string_t str);
-    string_t (*kindToStr)(token_kind_t kind);
+    token_list_t (*append_token)(token_t tok, token_list_t list);
+    token_list_t (*list_from_string)(string_t str);
+    string_t (*kind_to_str)(token_kind_t kind);
 } tokenizer = {
-    tokenizer__appendToken,
-    tokenizer__listFromString,
-    tokenizer__kindToStr
+    tokenizer__append_token,
+    tokenizer__list_from_string,
+    tokenizer__kind_to_str
 };

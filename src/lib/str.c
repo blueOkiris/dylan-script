@@ -20,18 +20,18 @@ string_t string__instance() {
     return (string_t) { num_strings_g - 1, strings_g[num_strings_g - 1], 0 };
 }
 
-string_t string__fromCharArray(const char *source) {
+string_t string__from_char_array(const char *source) {
     string_t new_str = string__instance();
     
     size_t len = strlen(source);
     for(size_t i = 0; i < len; i++) {
-        new_str = string__appendChar(source[i], new_str);
+        new_str = string__append_char(source[i], new_str);
     }
 
     return new_str;
 }
 
-string_t string__appendChar(char c, string_t source) {
+string_t string__append_char(char c, string_t source) {
     char *new_src = malloc(source.length + 2);
     string_t new_str;
 
@@ -48,7 +48,7 @@ string_t string__appendChar(char c, string_t source) {
     return new_str;
 }
 
-string_t string__appendString(string_t other, string_t source) {
+string_t string__append_string(string_t other, string_t source) {
     char *new_src = malloc(source.length + other.length + 1);
     string_t new_str;
 

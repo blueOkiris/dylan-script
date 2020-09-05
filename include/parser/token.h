@@ -7,7 +7,8 @@ typedef enum {
     SUM_OP, MUL_OP, EXP_OP, BOOL_OP, COND_OP, ASSIGNMENT_OP, MEMBER_OP, RET_OP,
     COMMA, BRACE, PARENTH, COLON, SEMICOLON,
     
-    PROGRAM, IMPORT, STRUCT, STRUCT_BODY,
+    PROGRAM, IMPORT, STRUCT, FUNCTION,
+    STRUCT_BODY,
     DECLARATION, TYPE_NAME, REF_KEYWD
 } token_kind_t;
 
@@ -26,13 +27,16 @@ typedef struct {
 extern token_list_t tokenizer__append_token(token_t tok, token_list_t list);
 extern token_list_t tokenizer__list_from_string(string_t str);
 extern string_t tokenizer__kind_to_str(token_kind_t kind);
+extern void tokenizer__free_all();
 
 static const struct {
     token_list_t (*append_token)(token_t tok, token_list_t list);
     token_list_t (*list_from_string)(string_t str);
     string_t (*kind_to_str)(token_kind_t kind);
+    void (*free_all)();
 } tokenizer = {
     tokenizer__append_token,
     tokenizer__list_from_string,
-    tokenizer__kind_to_str
+    tokenizer__kind_to_str,
+    tokenizer__free_all
 };

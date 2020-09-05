@@ -6,6 +6,13 @@
 static token_t **tokens_g = NULL;
 static int num_token_list_g = 0;
 
+void tokenizer__free_all() {
+    for(int i = 0; i < num_token_list_g; i++) {
+        free(tokens_g[i]);
+    }
+    free(tokens_g);
+}
+
 token_list_t tokenizer__append_token(token_t tok, token_list_t list) {
     token_list_t new_list = list;
     if(new_list.arr == NULL) {
@@ -91,6 +98,8 @@ string_t tokenizer__kind_to_str(token_kind_t kind) {
             return string.from_char_array("IMPORT");
         case STRUCT:
             return string.from_char_array("STRUCT");
+        case FUNCTION:
+            return string.from_char_array("FUNCTION");
         case STRUCT_BODY:
             return string.from_char_array("STRUCT_BODY");
         case DECLARATION:

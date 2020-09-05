@@ -30,8 +30,8 @@
 <if>            ::= 'if' <bool> <scope-dec> { 'elif' <bool> <scope-dec> } [ 'else' <scope-dec> ]
 <while>         ::= 'while' <bool> <scope-dec>
 <import>        ::= 'import' <ident>
-<stmt>          ::= <declaration> | <assignment> | <func-call> | <if> | <import> | <func-def>
-<scope-dec>     ::= '{' { <stmt> ';' } '}'
+<stmt>          ::= <scope-dec> | ( <declaration> | <assignment> | <func-call> | <if> | <import> | <func-def> ) ';'
+<scope-dec>     ::= '{' { <stmt> } '}'
 <struct-body>   ::= '{' { ( <declaration> ) ';' } '}'
 
 <struct>         ::= 'struct' <ident> <scope-dec>

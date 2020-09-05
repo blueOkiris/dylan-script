@@ -269,6 +269,16 @@ token_tree_t parse_struct(int *ref_i, token_list_t list) {
     return struct_tree;
 }
 
+// <func-def> ::= 'fn' <ident> '(' [ <def-arg-body> ] ')' 
+//                                                  '->' <type-name> <scope-dec>
+token_tree_t parse_function(int *ref_i, token_list_t list) {
+    token_tree_t function_tree = parser__new_token_tree();
+    function_tree.root = list.arr[*ref_i];
+    function_tree.root.kind = FUNCTION;
+    
+    return function_tree;
+}
+
 // <program> ::= { ( <import> | <struct> | <func-def> ) }
 token_tree_t parser__parse_program(token_list_t list) {
     token_tree_t new_tree = parser__new_token_tree();
@@ -288,7 +298,7 @@ token_tree_t parser__parse_program(token_list_t list) {
         } else*/ if(strcmp(list.arr[i].text.c_str, "import") == 0) {
             new_tree = parser__append_child(parse_import(&i, list), new_tree);
         } else if(strcmp(list.arr[i].text.c_str, "fn") == 0) {
-            //new_tree = parser__append_child(parse_function(&i, list), new_tree);
+            new_tree = parser__append_child(parse_function(&i, list), new_tree);
         } else if(strcmp(list.arr[i].text.c_str, "struct") == 0) {
             token_tree_t struct_tree = parse_struct(&i, list);
             new_tree = parser__append_child(struct_tree, new_tree);

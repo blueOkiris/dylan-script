@@ -13,6 +13,7 @@ extern token_tree_t parser__new_token_tree();
 extern token_tree_t parser__append_child(token_tree_t child, token_tree_t tree);
 extern token_tree_t parser__parse_program(token_list_t list);
 extern void parser__print_tree(token_tree_t tree, int tab_ind);
+extern void parser__free_all();
 
 static const struct {
     token_tree_t (*new_token_tree)();

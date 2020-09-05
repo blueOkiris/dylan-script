@@ -6,6 +6,13 @@
 static char **strings_g = NULL;
 static int num_strings_g = 0;
 
+void string__free_all() {
+    for(int i = 0; i < num_strings_g; i++) {
+        free(strings_g[i]);
+    }
+    free(strings_g);
+}
+
 string_t string__instance() {
     if(num_strings_g == 0) {
         strings_g = malloc(sizeof(char **));

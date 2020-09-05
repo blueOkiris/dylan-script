@@ -53,7 +53,7 @@ token_tree_t parser__append_child(token_tree_t child, token_tree_t tree) {
 }
 
 // <import> ::= 'import' <ident>
-token_tree_t parse_import(int *ref_i, token_list_t list) {
+token_tree_t parse_import(int *ref_i, token_list_t list, token_tree_t t) {
     token_tree_t import_tree = parser__new_token_tree();
     token_t import_token = list.arr[*ref_i];
     import_token.kind = IMPORT;
@@ -79,7 +79,7 @@ token_tree_t parse_import(int *ref_i, token_list_t list) {
 }
 
 // <type-name> ::= [ 'ref' ] { '*' } < ident>
-token_tree_t parse_type_name(int *ref_i, token_list_t list) {
+token_tree_t parse_type_name(int *ref_i, token_list_t list, token_tree_t t) {
     if(*ref_i >= list.length) {
         printf("Parser error: Unexpected EOF in type name.\n");
         exit(-1);
@@ -91,6 +91,8 @@ token_tree_t parse_type_name(int *ref_i, token_list_t list) {
     
     if(*ref_i >= list.length) {
         printf("Parser error: Unexpected EOF in type name.\n");
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     }
     if(list.arr[*ref_i].kind == IDENTIFIER
@@ -101,6 +103,8 @@ token_tree_t parse_type_name(int *ref_i, token_list_t list) {
         (*ref_i)++;
         if(*ref_i >= list.length) {
             printf("Parser error: Unexpected EOF in type name after ref.\n");
+            parser__print_tree(t, 0);
+            printf("ERROR! See above\n");
             exit(-1);
         }
     }
@@ -113,6 +117,8 @@ token_tree_t parse_type_name(int *ref_i, token_list_t list) {
         (*ref_i)++;
         if(*ref_i >= list.length) {
             printf("Parser error: Unexpected EOF in type name after '*'.\n");
+            parser__print_tree(t, 0);
+            printf("ERROR! See above\n");
             exit(-1);
         }
     }
@@ -123,6 +129,8 @@ token_tree_t parse_type_name(int *ref_i, token_list_t list) {
             list.arr[*ref_i].text.c_str,
             tokenizer.kind_to_str(list.arr[*ref_i].kind).c_str
         );
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     }
     token_tree_t ident_tree = parser__new_token_tree();
@@ -133,9 +141,11 @@ token_tree_t parse_type_name(int *ref_i, token_list_t list) {
 }
 
 // <declaration> ::= <ident> ':' <type-name> [ ':=' <expr> ]
-token_tree_t parse_declaration(int *ref_i, token_list_t list) {
+token_tree_t parse_declaration(int *ref_i, token_list_t list, token_tree_t t) {
     if(*ref_i >= list.length) {
         printf("Parser error: Unexpected EOF in variable declaration.\n");
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     } else if(list.arr[*ref_i].kind != IDENTIFIER) {
         printf(
@@ -143,6 +153,8 @@ token_tree_t parse_declaration(int *ref_i, token_list_t list) {
             list.arr[*ref_i].text.c_str,
             tokenizer.kind_to_str(list.arr[*ref_i].kind).c_str
         );
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     }
 
@@ -158,6 +170,8 @@ token_tree_t parse_declaration(int *ref_i, token_list_t list) {
     (*ref_i)++;
     if(*ref_i >= list.length) {
         printf("Parser error: Unexpected EOF in variable declaration.\n");
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     } else if(list.arr[*ref_i].kind != COLON) {
         printf(
@@ -165,6 +179,8 @@ token_tree_t parse_declaration(int *ref_i, token_list_t list) {
             list.arr[*ref_i].text.c_str,
             tokenizer.kind_to_str(list.arr[*ref_i].kind).c_str
         );
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     }
     
@@ -173,16 +189,18 @@ token_tree_t parse_declaration(int *ref_i, token_list_t list) {
     dec_tree = parser__append_child(colon_tree, dec_tree);
     (*ref_i)++;
 
-    token_tree_t type_tree = parse_type_name(ref_i, list);
+    token_tree_t type_tree = parse_type_name(ref_i, list, t);
     dec_tree = parser__append_child(type_tree, dec_tree);
 
     return dec_tree;
 }
 
 // <struct-body> ::= '{' { ( <declaration | <assignment> ) ';' } '}'
-token_tree_t parse_struct_body(int *ref_i, token_list_t list) {
+token_tree_t parse_struct_body(int *ref_i, token_list_t list, token_tree_t t) {
     if(list.arr[*ref_i].kind != BRACE && list.arr[*ref_i].kind != '{') {
         printf("Parser error: Expected '{' after struct declaration\n");
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     }
     token_tree_t struct_body = parser__new_token_tree();
@@ -196,16 +214,20 @@ token_tree_t parse_struct_body(int *ref_i, token_list_t list) {
     (*ref_i)++;
     if(*ref_i >= list.length) {
         printf("Parser error: Unexpected EOF in struct declaration.\n");
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     }
 
     while(list.arr[*ref_i].kind != BRACE) {
-        token_tree_t dec_tree = parse_declaration(ref_i, list);
+        token_tree_t dec_tree = parse_declaration(ref_i, list, t);
         struct_body = parser__append_child(dec_tree, struct_body);
 
         (*ref_i)++;
         if(*ref_i >= list.length) {
             printf("Parser error: Unexpected EOF after dec in struct.\n");
+            parser__print_tree(t, 0);
+            printf("ERROR! See above\n");
             exit(-1);
         } else if(list.arr[*ref_i].kind != SEMICOLON) {
             printf(
@@ -213,6 +235,8 @@ token_tree_t parse_struct_body(int *ref_i, token_list_t list) {
                 list.arr[*ref_i].text.c_str,
                 tokenizer.kind_to_str(list.arr[*ref_i].kind).c_str
             );
+            parser__print_tree(t, 0);
+            printf("ERROR! See above\n");
             exit(-1);
         }
         token_tree_t semi_colon_tree = parser__new_token_tree();
@@ -222,6 +246,8 @@ token_tree_t parse_struct_body(int *ref_i, token_list_t list) {
         (*ref_i)++;
         if(*ref_i >= list.length) {
             printf("Parser error: Unexpected EOF in struct declaration.\n");
+            parser__print_tree(t, 0);
+            printf("ERROR! See above\n");
             exit(-1);
         }
     }
@@ -234,7 +260,7 @@ token_tree_t parse_struct_body(int *ref_i, token_list_t list) {
 }
 
 // <struct> ::= 'struct' <ident> <scope-dec>
-token_tree_t parse_struct(int *ref_i, token_list_t list) {
+token_tree_t parse_struct(int *ref_i, token_list_t list, token_tree_t t) {
     token_tree_t struct_tree = parser__new_token_tree();
     token_t struct_token = list.arr[*ref_i];
     struct_token.kind = STRUCT;
@@ -243,6 +269,8 @@ token_tree_t parse_struct(int *ref_i, token_list_t list) {
     (*ref_i)++;
     if(*ref_i >= list.length) {
         printf("Parser error: Unexpected EOF in struct declaration.\n");
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     } else if(list.arr[*ref_i].kind != IDENTIFIER) {
         printf(
@@ -250,6 +278,8 @@ token_tree_t parse_struct(int *ref_i, token_list_t list) {
             list.arr[*ref_i].text.c_str,
             tokenizer.kind_to_str(list.arr[*ref_i].kind).c_str
         );
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     }
     token_tree_t ident_tree = parser__new_token_tree();
@@ -260,10 +290,12 @@ token_tree_t parse_struct(int *ref_i, token_list_t list) {
     (*ref_i)++;
     if(*ref_i >= list.length) {
         printf("Parser error: Unexpected EOF in struct declaration.\n");
+        parser__print_tree(t, 0);
+        printf("ERROR! See above\n");
         exit(-1);
     }
 
-    token_tree_t scop_dec = parse_struct_body(ref_i, list);
+    token_tree_t scop_dec = parse_struct_body(ref_i, list, t);
     struct_tree = parser__append_child(scop_dec, struct_tree);
 
     return struct_tree;
@@ -271,7 +303,7 @@ token_tree_t parse_struct(int *ref_i, token_list_t list) {
 
 // <func-def> ::= 'fn' <ident> '(' [ <def-arg-body> ] ')' 
 //                                                  '->' <type-name> <scope-dec>
-token_tree_t parse_function(int *ref_i, token_list_t list) {
+token_tree_t parse_function(int *ref_i, token_list_t list, token_tree_t t) {
     token_tree_t function_tree = parser__new_token_tree();
     function_tree.root = list.arr[*ref_i];
     function_tree.root.kind = FUNCTION;
@@ -295,13 +327,18 @@ token_tree_t parser__parse_program(token_list_t list) {
                 tokenizer.kind_to_str(list.arr[i].kind).c_str
             );
             parser__print_tree(new_tree, 0);
+            printf("ERROR! See above\n");
             exit(-1);
         } else if(strcmp(list.arr[i].text.c_str, "import") == 0) {
-            new_tree = parser__append_child(parse_import(&i, list), new_tree);
+            new_tree = parser__append_child(
+                parse_import(&i, list, new_tree), new_tree
+            );
         } else if(strcmp(list.arr[i].text.c_str, "fn") == 0) {
-            new_tree = parser__append_child(parse_function(&i, list), new_tree);
+            new_tree = parser__append_child(
+                parse_function(&i, list, new_tree), new_tree
+            );
         } else if(strcmp(list.arr[i].text.c_str, "struct") == 0) {
-            token_tree_t struct_tree = parse_struct(&i, list);
+            token_tree_t struct_tree = parse_struct(&i, list, new_tree);
             new_tree = parser__append_child(struct_tree, new_tree);
         }
     }

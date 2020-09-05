@@ -20,7 +20,7 @@ int main(int argc, char **args) {
     token_list_t tokens = tokenizer.list_from_string(
         string.from_char_array(source_arr)
     );
-    for(int i = 0; i < tokens.length; i++) {
+    /*for(int i = 0; i < tokens.length; i++) {
         printf(
             "Token { index = %d, string = %s, type = %s }\n", 
             tokens.arr[i].index, tokens.arr[i].text.c_str,
@@ -28,7 +28,7 @@ int main(int argc, char **args) {
         );
     }
 
-    printf("\n");
+    printf("\n");*/
 
     token_tree_t ast = parser.parse_program(tokens);
     parser.print_tree(ast, 0);

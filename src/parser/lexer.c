@@ -23,6 +23,11 @@ char is_operator(char c) {
         || c == '=';
 }
 
+char is_special_char(char c) {
+    return c == ',' || c == '{' || c == '}' || c == '(' || c == ')'
+        || c == ':' || c == ';';
+}
+
 token_list_t from_string_helper(token_list_t list, string_t str) {
     token_list_t new_list = list;
 
@@ -44,6 +49,11 @@ token_list_t from_string_helper(token_list_t list, string_t str) {
         } else if(str.c_str[i] == ':'
                 && i + 1 < str.length && str.c_str[i + 1] == '=') {
             new_list = lex_operator(&i, str, new_list);
+        } else if(is_special_char(str.c_str[i])) {
+            new_list = lex_special_char(&i, str, new_list);
+        } else {
+            printf("Parser error: Unexpected token - '%c'\n", str.c_str[i]);
+            exit(-1);
         }
     }
 
@@ -195,7 +205,6 @@ token_list_t lex_operator(int *ref_i, string_t str, token_list_t list) {
     char op[3];
     switch(str.c_str[*ref_i]) {
         case '+':
-        case '-':
             op[0] = str.c_str[*ref_i];
             op[1] = '\0';
             new_token = (token_t) {
@@ -279,6 +288,78 @@ token_list_t lex_operator(int *ref_i, string_t str, token_list_t list) {
                     string.from_char_array(op), start_ind, MUL_OP
                 };
             }
+            new_list = tokenizer.append_token(new_token, new_list);
+            break;
+        
+        case '-':
+            if((*ref_i) + 1 < str.length && str.c_str[(*ref_i) + 1] == '>') {
+                op[0] = str.c_str[(*ref_i)++];
+                op[1] = str.c_str[*ref_i];
+                op[2] = '\0';
+
+                new_token = (token_t) {
+                    string.from_char_array(op), start_ind, RET_OP
+                };
+            } else {
+                op[0] = str.c_str[*ref_i];
+                op[1] = '\0';
+
+                new_token = (token_t) {
+                    string.from_char_array(op), start_ind, SUM_OP
+                };
+            }
+            new_list = tokenizer.append_token(new_token, new_list);
+            break;
+    }
+
+    return new_list;
+}
+
+token_list_t lex_special_char(int *ref_i, string_t str, token_list_t list) {
+    token_list_t new_list = list;
+    int start_ind = *ref_i;
+
+    token_t new_token;
+    char op[2];
+    switch(str.c_str[*ref_i]) {
+        case ',':
+            new_token = (token_t) {
+                string.from_char_array(","), start_ind, COMMA
+            };
+            new_list = tokenizer.append_token(new_token, new_list);
+            break;
+
+        case '{':
+        case '}':
+            op[0] = str.c_str[*ref_i];
+            op[1] = '\0';
+            new_token = (token_t) {
+                string.from_char_array(op), start_ind, BRACE
+            };
+            new_list = tokenizer.append_token(new_token, new_list);
+            break;
+
+        case '(':
+        case ')':
+            op[0] = str.c_str[*ref_i];
+            op[1] = '\0';
+            new_token = (token_t) {
+                string.from_char_array(op), start_ind, PARENTH
+            };
+            new_list = tokenizer.append_token(new_token, new_list);
+            break;
+
+        case ':':
+            new_token = (token_t) {
+                string.from_char_array(":"), start_ind, COLON
+            };
+            new_list = tokenizer.append_token(new_token, new_list);
+            break;
+
+        case ';':
+            new_token = (token_t) {
+                string.from_char_array(";"), start_ind, SEMICOLON
+            };
             new_list = tokenizer.append_token(new_token, new_list);
             break;
     }

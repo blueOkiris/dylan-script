@@ -33,4 +33,4 @@
 
 <class>         ::= 'class' <ident> <scope-dec>
 <def-arg-body>  ::= <ident> [ ':' <type-name> ] { ',' <ident> [ ':' <type-name> ] }
-<func>          ::= 'fn' <ident> '(' [ <def-arg-body> ] ')' <scope-dec>
+<func>          ::= 'fn' <ident> '(' [ <def-arg-body> ] ')' '->' <type-name> <scope-dec>

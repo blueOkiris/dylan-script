@@ -72,6 +72,18 @@ string_t tokenizer__kind_to_str(token_kind_t kind) {
             return string.from_char_array("COND_OP");
         case ASSIGNMENT_OP:
             return string.from_char_array("ASSIGNMENT_OP");
+        case RET_OP:
+            return string.from_char_array("RET_OP");
+        case COMMA:
+            return string.from_char_array("COMMA");
+        case BRACE:
+            return string.from_char_array("BRACE");
+        case PARENTH:
+            return string.from_char_array("PARENTH");
+        case COLON:
+            return string.from_char_array("COLON");
+        case SEMICOLON:
+            return string.from_char_array("SEMICOLON");
         default:
             return string.from_char_array("UNKNOWN");
     }

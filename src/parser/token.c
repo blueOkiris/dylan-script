@@ -52,6 +52,10 @@ string_t tokenizer__kindToStr(token_kind_t kind) {
             return string.fromCharArray("SCI_FLOAT");
         case BOOL_VAL:
             return string.fromCharArray("BOOL_VAL");
+        case IDENTIFIER:
+            return string.fromCharArray("IDENTIFIER");
+        case MEMBER_OP:
+            return string.fromCharArray("MEMBER_OP");
         default:
             return string.fromCharArray("UNKNOWN");
     }

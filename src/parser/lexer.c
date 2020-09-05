@@ -5,20 +5,33 @@
 #include <token.h>
 #include <lexer.h>
 
+char is_whitespace(char c) {
+    return c == ' ' || c == '\r' || c == '\n' || c == '\t';
+}
+
+char is_letter(char c) {
+    return (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z');
+}
+
+char is_digit(char c) {
+    return c >= '0' && c <= '9';
+}
+
 token_list_t fromStringHelper(token_list_t list, string_t str) {
     token_list_t new_list = list;
 
     for(int i = 0; i < str.length; i++) {
-        if(str.c_str[i] == ' ' || str.c_str[i] == '\r'
-                || str.c_str[i] == '\n' || str.c_str[i] == '\t') {
-            i++;
-        } if(str.c_str[i] == '\'') {
+        if(is_whitespace(str.c_str[i])) {
+            continue;
+        } else if(str.c_str[i] == '\'') {
             new_list = lexString(&i, str, new_list);
-        } else if(str.c_str[i] == '.' || (str.c_str[i] >= '0' && str.c_str[i] <= '9')) {
+        } else if(str.c_str[i] == '.' || is_digit(str.c_str[i])) {
             new_list = lexNumber(&i, str, new_list);
         } else if(i + 3 < str.length && 
                 (strncmp("true", str.c_str + i, 4) == 0 || strncmp("false", str.c_str + i, 5) == 0)) {
             new_list = lexBoolVal(&i, str, new_list);
+        } else if(str.c_str[i] == '_' || is_letter(str.c_str[i])) {
+            new_list = lexIdentifier(&i, str, new_list);
         }
     }
 
@@ -109,15 +122,40 @@ token_list_t lexBoolVal(int *ref_i, string_t str, token_list_t list) {
     int start_ind = *ref_i;
 
     if(str.c_str[*ref_i] == 't') {
-        *ref_i += 3;
+        *ref_i += 4;
 
         token_t new_tok = (token_t) { string.fromCharArray("true"), start_ind, BOOL_VAL };
         new_list = tokenizer.appendToken(new_tok, new_list);
     } else {
-        *ref_i += 4;
+        *ref_i += 5;
 
         token_t new_tok = (token_t) { string.fromCharArray("false"), start_ind, BOOL_VAL };
         new_list = tokenizer.appendToken(new_tok, new_list);
     }
+    return new_list;
+}
+
+token_list_t lexIdentifier(int *ref_i, string_t str, token_list_t list) {
+    token_list_t new_list = list;
+    int start_ind = *ref_i;
+
+    string_t ident = string.instance();
+    ident = string.appendChar(str.c_str[*ref_i], ident);
+    (*ref_i)++;
+    while(str.c_str[*ref_i] == '_' || is_letter(str.c_str[*ref_i]) || is_digit(str.c_str[*ref_i])) {
+        ident = string.appendChar(str.c_str[*ref_i], ident);
+        (*ref_i)++;
+    }
+
+    token_t new_tok = (token_t) { ident, start_ind, IDENTIFIER };
+    new_list = tokenizer.appendToken(new_tok, new_list);
+
+    if(str.c_str[*ref_i] == '.') {
+        token_t tok2 = (token_t) { string.fromCharArray("."), (*ref_i), MEMBER_OP };
+        new_list = tokenizer.appendToken(tok2, new_list);
+        (*ref_i)++;
+    }
+    (*ref_i)--;
+
     return new_list;
 }

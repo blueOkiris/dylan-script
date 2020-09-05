@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <str.h>
 #include <token.h>
+#include <parser.h>
 
 int main(int argc, char **args) {
     if(argc < 2) {
@@ -24,6 +25,8 @@ int main(int argc, char **args) {
                 tokenizer.kind_to_str(tokens.arr[i].kind).c_str
             );
         }
+
+        token_tree_t ast = parser.parse_program(tokens);
     }
 
     return 0;

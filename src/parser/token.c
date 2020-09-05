@@ -84,6 +84,12 @@ string_t tokenizer__kind_to_str(token_kind_t kind) {
             return string.from_char_array("COLON");
         case SEMICOLON:
             return string.from_char_array("SEMICOLON");
+
+        case PROGRAM:
+            return string.from_char_array("PROGRAM");
+        case IMPORT:
+            return string.from_char_array("IMPORT");
+        
         default:
             return string.from_char_array("UNKNOWN");
     }

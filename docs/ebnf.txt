@@ -17,7 +17,7 @@
 <map>           ::= '<' <type-name> ',' <type-name> '>' <map-body>
 <type-name>     ::= [ 'ref' ] { '*' } <ident>
 
-<term>          ::= <ident> | <list> | <map> | <bool> | <string> | <func-call> | <number> | '(' <pow-exp> ')'
+<term>          ::= <ident> | <list> | <map> | <list-body> | <bool> | <string> | <func-call> | <number> | '(' <pow-exp> ')'
 <pow-exp>       ::= <unary-op> <pow-exp> | term [ <exp-op> pow-exp ]
 <mul-exp>       ::= <pow-exp> { <mul-op> <pow-exp> }
 <expr>          ::= <mul-exp> { <sum-op> <mul-exp> }
@@ -27,6 +27,7 @@
 <declaration>   ::= <ident> [ ':' <type-name> ] [ ':=' <expr> ]
 <assignment>    ::= <ident> ':=' <expr>
 <if>            ::= 'if' <bool> <scope-dec> { 'elif' <bool> <scope-dec> } [ 'else' <scope-dec> ]
+<while>         ::= 'while' <bool> <scope-dec>
 <import>        ::= 'import' <ident>
 <stmt>          ::= <declaration> | <assignment> | <func-call> | <if> | <import> | <func-def>
 <scope-dec>     ::= '{' { <stmt> ';' } '}'
@@ -35,4 +36,4 @@
 <def-arg-body>  ::= <ident> [ ':' <type-name> ] { ',' <ident> [ ':' <type-name> ] }
 <func-def>      ::= 'fn' <ident> '(' [ <def-arg-body> ] ')' '->' <type-name> <scope-dec>
 
-<program>       ::= { ( <import> ';' | <struct> | <func-def> ) }
+<program>       ::= { ( <import> | <struct> | <func-def> ) }

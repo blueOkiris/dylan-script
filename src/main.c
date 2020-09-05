@@ -26,7 +26,10 @@ int main(int argc, char **args) {
             );
         }
 
+        printf("\n");
+
         token_tree_t ast = parser.parse_program(tokens);
+        parser.print_tree(ast, 0);
     }
 
     return 0;

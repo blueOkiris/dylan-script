@@ -7,7 +7,7 @@ typedef enum {
     SUM_OP, MUL_OP, EXP_OP, BOOL_OP, COND_OP, ASSIGNMENT_OP, MEMBER_OP, RET_OP,
     COMMA, BRACE, PARENTH, COLON, SEMICOLON,
     
-    PROGRAM, IMPORT, STRUCT
+    PROGRAM, IMPORT, STRUCT, STRUCT_BODY
 } token_kind_t;
 
 typedef struct {

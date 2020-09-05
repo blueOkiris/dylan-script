@@ -17,7 +17,8 @@
 <map>           ::= '<' <type-name> ',' <type-name> '>' <map-body>
 <type-name>     ::= [ 'ref' ] { '*' } <ident>
 
-<term>          ::= <ident> | <list> | <map> | <list-body> | <bool> | <string> | <func-call> | <number> | '(' <pow-exp> ')'
+<term>          ::= <ident> | <list> | <map> | <list-body> | <bool> | <string> 
+                    | <func-call> | <number> | '(' <pow-exp> ')' | <func-def>
 <pow-exp>       ::= <unary-op> <pow-exp> | term [ <exp-op> pow-exp ]
 <mul-exp>       ::= <pow-exp> { <mul-op> <pow-exp> }
 <expr>          ::= <mul-exp> { <sum-op> <mul-exp> }
@@ -31,7 +32,7 @@
 <import>        ::= 'import' <ident>
 <stmt>          ::= <declaration> | <assignment> | <func-call> | <if> | <import> | <func-def>
 <scope-dec>     ::= '{' { <stmt> ';' } '}'
-<struct-body>   ::= '{' { ( <declaration> | <assignment> ) ';' } '}'
+<struct-body>   ::= '{' { ( <declaration> ) ';' } '}'
 
 <struct>         ::= 'struct' <ident> <scope-dec>
 <def-arg-body>  ::= <ident> [ ':' <type-name> ] { ',' <ident> [ ':' <type-name> ] }

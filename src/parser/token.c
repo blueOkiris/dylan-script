@@ -91,6 +91,8 @@ string_t tokenizer__kind_to_str(token_kind_t kind) {
             return string.from_char_array("IMPORT");
         case STRUCT:
             return string.from_char_array("STRUCT");
+        case STRUCT_BODY:
+            return string.from_char_array("STRUCT_BODY");
         
         default:
             return string.from_char_array("UNKNOWN");

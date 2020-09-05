@@ -1,12 +1,12 @@
 import io
 
-struct test {
+struct Test {
     text : str;
     num : int;
 }
 
 fn main() -> null {
-    x : text := { 'Hello, world!', 2 }
-    io.print(text.str);
-    io.print(text.num);
+    x : Test := { 'Hello, world!', 2 }
+    io.print(x.str);
+    io.print(x.num);
 }

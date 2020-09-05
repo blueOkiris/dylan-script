@@ -291,7 +291,6 @@ token_tree_t parser__parse_program(token_list_t list) {
             //new_tree = parser__append_child(parse_function(&i, list), new_tree);
         } else if(strcmp(list.arr[i].text.c_str, "struct") == 0) {
             token_tree_t struct_tree = parse_struct(&i, list);
-            parser__print_tree(struct_tree, 0);
             new_tree = parser__append_child(struct_tree, new_tree);
         }
     }

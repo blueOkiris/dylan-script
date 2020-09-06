@@ -1,0 +1,150 @@
+@startuml parser-class
+
+class Program {
+    + {static} main(args : string[])
+}
+
+namespace DataLayer {
+    enum TokenType_Symbols {
+        Parenth
+        Brace
+        Bracket
+        BoolOp
+        Comma
+        Semi
+        MemberOp
+        Sci
+        Float
+        Integer
+        String
+        AsgnOp
+        TypeOp
+        RefOp
+        CondOp
+        NotOp
+        RetDerefOp
+        SumOp
+        MulOp
+        ExpOp
+        SciOp
+        BoolVal
+        Keyword
+        Name
+    }
+
+    enum TokenType_Compound {
+        Number
+        Bool
+        Ident
+        ListBody
+        List
+        MapBody
+        Map
+        TypeName
+        Term
+        PowExp
+        MulExp
+        Expr
+        FuncCall
+        Declaration
+        Assignment
+        If
+        While
+        Import
+        Stmt
+        ScopeDec
+        StructBody
+
+        Struct
+        DefArgBody
+        FuncDef
+        Program
+    }
+
+    class Token {
+        + Type : TokenType
+    }
+
+    class SymbolToken {
+        + Source : string
+        + Line : int
+        + Pos : int
+    }
+
+    class CompoundToken {
+        + Children : Token[]
+    }
+
+    Token -l-> TokenType_Symbols
+    TokenType_Compound -[hidden]> TokenType_Symbols
+    SymbolToken -d-|> Token
+    CompoundToken -d-|> Token
+
+    SymbolToken -[hidden]> CompoundToken
+}
+
+namespace InputLayer {
+    class SettingsManager {
+        - {static} instance : SettingsManager
+        - fileName : string
+        
+        - SettingsManager()
+        + Instance() : SettingsManager
+        + SetupFromArguments(args : string[]) : bool
+        + State() : string
+    }
+
+    class CodeReader {
+        + {static} FromFile(fileName : string) : (bool, state)
+    }
+
+    class Lexer {
+        - {static} patterns : string[]
+        + {static} tokens(code : string) : SymbolToken[]
+    }
+
+    CodeReader -[hidden]-> Lexer
+}
+
+namespace OutputLayer {
+    class Parser {
+        - {static} parseWhile(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseIf(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseAssignment(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseStmt(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseScopeDec(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseDefArgBody(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseNumber(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseFuncCall(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseBool(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseMapBody(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseMap(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseListBody(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseTypeName(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseList(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseTerm(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parsePowExpr(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseMulExpr(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseExpr(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseDeclaration(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseStructBody(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseIdent(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+
+        - {static} parseStruct(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseFuncDef(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+        - {static} parseImport(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
+
+        + {static} buildProgram(tokens : SymbolToken[]) : CompoundToken
+    }
+}
+
+Program --> InputLayer.SettingsManager
+Program --> InputLayer.CodeReader
+Program --> InputLayer.Lexer
+Program ---> OutputLayer.Parser
+InputLayer.Lexer .d.> DataLayer.SymbolToken
+OutputLayer.Parser .d.> DataLayer.CompoundToken
+
+InputLayer ..r.> OutputLayer
+
+@enduml

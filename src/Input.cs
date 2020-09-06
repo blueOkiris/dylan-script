@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace dylanscript {
     class SettingsManager {
@@ -58,12 +60,67 @@ namespace dylanscript {
     }
 
     class Lexer {
-        private static string[] patterns = {
-
+        private static Dictionary<string, TokenType> patterns = 
+                new Dictionary<string, TokenType>() {
+            { "[\\(\\)]", TokenType.Parenth }, { "[{}]", TokenType.Brace },
+            { "[\\[\\]]", TokenType.Bracket }, { "[&|]", TokenType.BoolOp },
+            { ",", TokenType.Comma }, { ";", TokenType.Semi },
+            { "\\.", TokenType.MemberOp },
+            { "[0-9]+(\\.[0-9]+)?e[0-9]+", TokenType.Sci },
+            { "[0-9]+(\\.[0-9]+)?", TokenType.Float },
+            { "[0-9]+", TokenType.Integer },
+            { "'(\\\\.|[^'\\\\])*'", TokenType.String },
+            { ":=", TokenType.AsgnOp }, { ":", TokenType.TypeOp },
+            { "#", TokenType.RefOp },
+            { "([<>]=*)|(~=)|=", TokenType.CondOp },
+            { "~", TokenType.NotOp }, { "->", TokenType.RetDerefOp },
+            { "[+-]", TokenType.SumOp }, { "[*\\/%]", TokenType.MulOp },
+            { "\\^", TokenType.ExpOp },
+            { "(true)|(false)", TokenType.BoolVal },
+            { 
+                "(ref)|(if)|(elif)|(else)|(while)|(import)|(fn)|(struct)",
+                TokenType.Keyword
+            },
+            { "[A-Za-z_]+[A-Za-z0-9_]*", TokenType.Name }
         };
         
         public static SymbolToken[] Tokens(string code) {
-            return new SymbolToken[0] {};
+            var tokens = new List<SymbolToken>();
+
+            var regExes = new Dictionary<Regex, TokenType>();
+            foreach(var key in patterns.Keys) {
+                regExes.Add(
+                    new Regex(key, RegexOptions.Compiled),
+                    patterns[key]
+                );
+            }
+            
+            var len = code.Length;
+            for(int ind = 0, line = 1, col = 1; ind < len; ind++, col++) {
+                if(code[ind] == '\n') {
+                    line++;
+                    col = 0;
+                    //Console.WriteLine();
+                }
+                //Console.Write(pos + " ");
+
+                foreach(var key in regExes.Keys) {
+                    var match = key.Match(code.Substring(ind));
+                    if(match.Success && match.Index == 0) {
+                        tokens.Add(
+                            new SymbolToken(
+                                regExes[key], match.Value,
+                                line, col
+                            )
+                        );
+                        col += match.Length - 1;
+                        ind += match.Length - 1;
+                        break;
+                    }
+                }
+            }
+
+            return tokens.ToArray();
         }
     }
 }

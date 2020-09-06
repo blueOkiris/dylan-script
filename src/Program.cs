@@ -24,7 +24,11 @@ namespace dylanscript {
                     break;
             }
 
-            Console.WriteLine(code.Item1);
+            //Console.WriteLine(code.Item1);
+            var tokens = Lexer.Tokens(code.Item1); 
+            foreach(var token in tokens) {
+                Console.WriteLine(token);
+            }
         }
     }
 }

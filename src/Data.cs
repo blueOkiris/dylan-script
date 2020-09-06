@@ -5,7 +5,7 @@ namespace dylanscript {
         Parenth, Brace, Bracket, BoolOp, Comma, Semi,
         MemberOp, Sci, Float, Integer, String, AsgnOp,
         TypeOp, RefOp, CondOp, NotOp, RetDerefOp, SumOp,
-        MulOp, ExpOp, SciOp, BoolVal, Keyword, Name,
+        MulOp, ExpOp, BoolVal, Keyword, Name,
 
         Number, Bool, Ident, ListBody, List, MapBody,
         Map, TypeName, Term, PowExp, MulExp, Expr,
@@ -33,6 +33,12 @@ namespace dylanscript {
             Source = source;
             Line = line;
             Pos = pos;
+        }
+
+        public override string ToString() {
+            return
+                "Symbol Token: { '" + Source
+                    + "', (" + Line + ":" + Pos + "), " + Type + " }";
         }
     }
 

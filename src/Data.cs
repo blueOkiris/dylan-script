@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 
 namespace dylanscript {
     enum TokenType {
@@ -67,6 +68,33 @@ namespace dylanscript {
                 childs.Add(childCopy);
             }
             Children = childs.ToArray();
+        }
+
+        private string toString(CompoundToken token, int tabInd = -1) {
+            var tokenStr = new StringBuilder();
+            if(token.Type == TokenType.Program) {
+                tokenStr.Append("Program:");
+            } else {
+                for(int i = 0; i < tabInd; i++) {
+                    tokenStr.Append("|--");
+                }
+                tokenStr.Append(Type);
+            }
+            foreach(var child in token.Children) {
+                if(!(child is CompoundToken)) {
+                    tokenStr.Append("|--");
+                    tokenStr.Append(child.ToString());
+                } else {
+                    tokenStr.Append(
+                        toString(child as CompoundToken, tabInd + 1)
+                    );
+                }
+            }
+            return tokenStr.ToString();
+        }
+
+        public override string ToString() {
+            return toString(this);
         }
     }
 }

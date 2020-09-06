@@ -1,41 +1,57 @@
-<sum-op>        ::= '+' | '-'
-<mul-op>        ::= '*' | '/' | '%'
-<exp-op>        ::= '^'
-<bool-val>      ::= 'true' | 'false'
-<bool-op>       ::= '&' | '|'
-<cond-op>       ::= '<' | '>' | '>=' | '<=' | '=' | '/='
-<bool>          ::= <bool-val> | <bool> [ <cond-op> <bool> ] | <expr> <cond-op> <expr>
-<ident>         ::= /[A-Za-z_]+[A-Za-z0-9_]*/ | <expr> '.' <ident>
-<string>        ::= /'(\\.|[^'\\])*'/
+// Symbols
+<parenth>       ::= /[\(\)]/
+<brace>         ::= /[{}]/
+<bracket>       ::= /[\[\]]/
+<bool-op>       ::= /[&|]/
+<comma>         ::= /,/
+<semi>          ::= /;/
+<member-op>     ::= /\./
+<sci>           ::= /[0-9]+(\.[0-9]+)?e[0-9]+/
+<float>         ::= /[0-9]+(\.[0-9]+)?/
 <integer>       ::= /[0-9]+/
-<float>         ::= /[0-9]+/ '.' /[0-9]*/
-<sci>           ::= /[0-9]+/ [ '.' /[0-9]*/ ] +/'e' [ ( '+' | '-' ) ] <integer>
-<number>        ::= <integer> | <float> | <sci>
-<list-body>     ::= '{' [ <expr> { ',' <expr> } ] '}'
-<list>          ::= '<' <type-name> '>' <list-body>
-<map-body>      ::= '{' [ <expr> ':' <expr> { ',' <expr> ':' <expr } ] '}'
-<map>           ::= '<' <type-name> ',' <type-name> '>' <map-body>
-<type-name>     ::= [ 'ref' ] { '*' } <ident>
+<string>        ::= /'(\\.|[^'\\])*'/
+<asgn-op>       ::= /:=/
+<type-op>       ::= /:/
+<ref-op>        ::= /#/
+<cond-op>       ::= /([<>]=*)|(~=)|=/
+<not-op>        ::= /~/
+<ret-deref-op>  ::= /->/
+<sum-op>        ::= /[+-]/
+<mul-op>        ::= /[*\/]/
+<exp-op>        ::= /\^/
+<sci-op>        ::= /e/
+<bool-val>      ::= /(true)|(false)/
+<keyword>       ::= /(ref)|(if)|(elif)|(else)|(while)|(import)|(fn)|(struct)/
+<name>          ::= /[A-Za-z_]+[A-Za-z0-9_]*/
 
+// Compounds
+<number>        ::= <integer> | <float> | <sci>
+<bool>          ::= <not-op> <bool> <bool-val> | <bool> [ <cond-op> <bool> ]
+                | <expr> <cond-op> <expr>
+<ident>         ::= name | <expr> <member-op> <ident>
+<list-body>     ::= <brace> [ <expr> { <comma> <expr> } ] <brace>
+<list>          ::= <bracket> <type-name> <bracket> <list-body>
+<map-body>      ::= <brace> [ <expr> <type-op> <expr> { <comma> <expr> <type-op> <expr> } ] <brace>
+<map>           ::= <bracket> <type-name> <comma> <type-name> <bracket> <map-body>
+<type-name>     ::= [ <keyword> ] { <ptr-op> } <ident>
 <term>          ::= <ident> | <list> | <map> | <list-body> | <bool> | <string> 
-                    | <func-call> | <number> | '(' <pow-exp> ')' | <func-def>
-<pow-exp>       ::= <unary-op> <pow-exp> | term [ <exp-op> pow-exp ]
+                | <func-call> | <number> | <func-def>
+                | <sum-op> <term> | ( <sum-op> | <ret-deref-op> | <ref-op> ) <term>
+<pow-exp>       ::= <pow-exp> | term { <exp-op> pow-exp }
 <mul-exp>       ::= <pow-exp> { <mul-op> <pow-exp> }
 <expr>          ::= <mul-exp> { <sum-op> <mul-exp> }
-<arg-body>      ::= [ 'ref' ] { '&' } <expr> { ',' <expr> }
-<func-call>     ::= <ident> ( '(' [ <list-body> <r-par> ] ')' )
-
-<declaration>   ::= <ident> ':' <type-name> [ ':=' <expr> ]
-<assignment>    ::= <ident> ':=' <expr>
-<if>            ::= 'if' <bool> <scope-dec> { 'elif' <bool> <scope-dec> } [ 'else' <scope-dec> ]
-<while>         ::= 'while' <bool> <scope-dec>
-<import>        ::= 'import' <ident>
+<func-call>     ::= <ident> ( <parenth> [ <list-body> ] <parenth> )
+<declaration>   ::= <ident> <type-op> <type-name> [ <asgn-op> <expr> ]
+<assignment>    ::= <ident> <asgn-op>  <expr> | <parenth> <expr> <parenth> 
+<if>            ::= <keyword> <bool> <scope-dec> { <keyword> <bool> <scope-dec> } [ <keyword> <scope-dec> ]
+<while>         ::= <keyword> <bool> <scope-dec>
 <stmt>          ::= <scope-dec> | ( <declaration> | <assignment> | <func-call> | <if> | <import> | <func-def> ) ';'
-<scope-dec>     ::= '{' { <stmt> } '}'
-<struct-body>   ::= '{' { ( <declaration> ) ';' } '}'
+<scope-dec>     ::= <brace> { <stmt> } <brace>
+<struct-body>   ::= <brace> { ( <declaration> ) <semi> } <brace>
+<def-arg-body>  ::= <name> <type-op> <type-name> { <comma> <name> <type-op> <type-name> }
 
-<struct>         ::= 'struct' <ident> <scope-dec>
-<def-arg-body>  ::= <ident> [ ':' <type-name> ] { ',' <ident> [ ':' <type-name> ] }
-<func-def>      ::= 'fn' <ident> '(' [ <def-arg-body> ] ')' '->' <type-name> <scope-dec>
+<struct>        ::= <keyword> <name> <struct-body>
+<func-def>      ::= <keyword> <name> <parenth> [ <def-arg-body> ] <parenth> <ret-deref-op> <type-name> <scope-dec>
+<import>        ::= <keyword> <ident>
 
 <program>       ::= { ( <import> | <struct> | <func-def> ) }

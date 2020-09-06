@@ -84,6 +84,12 @@ namespace DataLayer {
 }
 
 namespace InputLayer {
+    enum FileIOState {
+        Okay,
+        NotFound,
+        ReadError
+    }
+
     class SettingsManager {
         - {static} instance : SettingsManager
         - fileName : string
@@ -95,7 +101,7 @@ namespace InputLayer {
     }
 
     class CodeReader {
-        + {static} FromFile(fileName : string) : (bool, state)
+        + {static} FromFile(fileName : string) : (string, FileIOState)
     }
 
     class Lexer {
@@ -103,7 +109,8 @@ namespace InputLayer {
         + {static} tokens(code : string) : SymbolToken[]
     }
 
-    CodeReader -[hidden]-> Lexer
+    CodeReader .d.> FileIOState
+    SettingsManager -[hidden]-> Lexer
 }
 
 namespace OutputLayer {

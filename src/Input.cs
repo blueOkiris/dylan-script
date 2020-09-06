@@ -56,4 +56,14 @@ namespace dylanscript {
             }
         }
     }
+
+    class Lexer {
+        private static string[] patterns = {
+
+        };
+        
+        public static SymbolToken[] Tokens(string code) {
+            return new SymbolToken[0] {};
+        }
+    }
 }

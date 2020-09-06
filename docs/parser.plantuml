@@ -106,7 +106,7 @@ namespace InputLayer {
 
     class Lexer {
         - {static} patterns : string[]
-        + {static} tokens(code : string) : SymbolToken[]
+        + {static} Tokens(code : string) : SymbolToken[]
     }
 
     CodeReader .d.> FileIOState

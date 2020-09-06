@@ -141,7 +141,7 @@ namespace OutputLayer {
         - {static} parseFuncDef(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
         - {static} parseImport(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
 
-        + {static} buildProgram(tokens : SymbolToken[]) : CompoundToken
+        + {static} BuildProgram(tokens : SymbolToken[]) : CompoundToken
     }
 }
 

@@ -31,3 +31,9 @@ A small scripting language that I hope to grow into something larger
 ## Running
 
 `dotnet run dylan-script <filename>`
+
+## Planning
+
+Here's a class diagram of the planned Parser:
+
+![parser class diagram](./docs/parser-class.png)

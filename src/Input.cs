@@ -4,12 +4,22 @@ using System.IO;
 using System.Text.RegularExpressions;
 
 namespace dylanscript {
+    struct Settings {
+        public string FileName;
+        public bool Debug;
+
+        public Settings(string fileName = "", bool debug = false) {
+            FileName = fileName;
+            Debug = debug;
+        }
+    }
+
     class SettingsManager {
         private static SettingsManager instance = null;
-        private string fileName;
+        private Settings state;
 
         private SettingsManager() {
-            fileName = "";
+            state = new Settings();
         }
 
         public static SettingsManager Instance() {
@@ -20,19 +30,30 @@ namespace dylanscript {
             return instance;
         }
 
-        public string State() {
-            return fileName;
+        public Settings State() {
+            return state;
         }
 
         public bool SetupFromArguments(string[] args) {
             if(args.Length < 1) {
                 Console.WriteLine("No filename given.");
                 return false;
-            } else if(args.Length > 1) {
+            } else if(args.Length > 2) {
                 Console.WriteLine("Too many arguments given.");
                 return false;
             } else {
-                fileName = args[0];
+                if(args.Length > 1) {
+                    if(args[0] == "--debug" || args[1] == "--debug") {
+                        state.Debug = true;
+                    } else {
+                        Console.WriteLine("Unexpected non-filename argument");
+                        return false;
+                    }
+
+                    state.FileName = args[0] == "--debug" ? args[1] : args[0];
+                } else {
+                    state.FileName = args[0];
+                }
                 return true;
             }
         }

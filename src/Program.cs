@@ -8,7 +8,7 @@ namespace dylanscript {
                 Environment.Exit(-1);
             }
             var settings = settingsManager.State();
-            var code = CodeReader.FromFile(settings);
+            var code = CodeReader.FromFile(settings.FileName);
             switch(code.Item2) {
                 case FileIOState.NotFound:
                     Console.WriteLine("File was not found.");
@@ -25,9 +25,11 @@ namespace dylanscript {
             }
 
             //Console.WriteLine(code.Item1);
-            var tokens = Lexer.Tokens(code.Item1); 
-            foreach(var token in tokens) {
-                Console.WriteLine(token);
+            var tokens = Lexer.Tokens(code.Item1);
+            if(settings.Debug) {
+                foreach(var token in tokens) {
+                    Console.WriteLine(token);
+                }
             }
         }
     }

@@ -2,7 +2,7 @@ import io
 
 struct Test {
     text : str;
-    num : int;
+    num : num;
 }
 
 fn main() -> null {

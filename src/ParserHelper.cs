@@ -63,9 +63,55 @@ namespace dylanscript {
             return new CompoundToken(TokenType.ListBody, new Token[0] {});
         }
 
+        // <type-name> ::= [ <keyword> ] { <ptr-op> } <name>
         private static CompoundToken parseTypeName(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.TypeName, new Token[0] {});
+            SymbolToken refWord = null;
+            if(tokens[i].Type == TokenType.Keyword
+                    && tokens[i].Source == "ref") {
+                refWord = tokens[i];
+                i++;
+                if(i >= tokens.Length) {
+                    throw new Exception(
+                        "Parser Error: "
+                        + "Unexpected EOF at line " + tokens[i - 1].Line
+                        + ", pos " + tokens[i - 1].Pos + "."
+                    );
+                }
+            }
+
+            var pointerOps = new List<Token>();
+            while(tokens[i].Type == TokenType.RetDerefOp) {
+                pointerOps.Add(tokens[i]);
+                i++;
+                if(i >= tokens.Length) {
+                    throw new Exception(
+                        "Parser Error: "
+                        + "Unexpected EOF at line " + tokens[i - 1].Line
+                        + ", pos " + tokens[i - 1].Pos + "."
+                    );
+                }
+            }
+
+            if(tokens[i].Type != TokenType.Name) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Expected name in type line "
+                    + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
+                );
+            }
+            var name = tokens[i];
+
+            var children = new List<Token>();
+            if(refWord != null) {
+                children.Add(refWord);
+            }
+            foreach(var pointerOp in pointerOps) {
+                children.Add(pointerOp);
+            }
+            children.Add(name);
+
+            return new CompoundToken(TokenType.TypeName, children.ToArray());
         }
 
         private static CompoundToken parseList(

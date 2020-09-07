@@ -32,7 +32,7 @@
 <list>          ::= <bracket> <type-name> <bracket> <list-body>
 <map-body>      ::= <brace> [ <expr> <type-op> <expr> { <comma> <expr> <type-op> <expr> } ] <brace>
 <map>           ::= <bracket> <type-name> <comma> <type-name> <bracket> <map-body>
-<type-name>     ::= [ <keyword> ] { <ptr-op> } <ident>
+<type-name>     ::= [ <keyword> ] { <ret-deref-op> } <name>
 <term>          ::= <ident> | <list> | <map> | <list-body> | <bool> | <string> 
                 | <func-call> | <number> | <func-def>
                 | <sum-op> <term> | ( <sum-op> | <ret-deref-op> | <ref-op> ) <term>

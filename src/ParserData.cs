@@ -83,7 +83,9 @@ namespace dylanscript {
             }
             foreach(var child in token.Children) {
                 if(!(child is CompoundToken)) {
-                    tokenStr.Append("|--");
+                    for(int i = 0; i < tabInd + 1; i++) {
+                        tokenStr.Append("|--");
+                    }
                     tokenStr.Append(child.ToString());
                     tokenStr.Append('\n');
                 } else {

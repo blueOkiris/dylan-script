@@ -40,7 +40,7 @@
 <mul-exp>       ::= <pow-exp> { <mul-op> <pow-exp> }
 <expr>          ::= <mul-exp> { <sum-op> <mul-exp> } | <expr> <bracket> <expr> <bracket>
 <func-call>     ::= <ident> ( <parenth> [ <list-body> ] <parenth> )
-<declaration>   ::= <ident> <type-op> <type-name> [ <asgn-op> <expr> ]
+<declaration>   ::= <name> <type-op> <type-name> [ <asgn-op> <expr> ]
 <assignment>    ::= <ident> <asgn-op>  <expr> | <parenth> <expr> <parenth> 
 <if>            ::= <keyword> <bool> <scope-dec> { <keyword> <bool> <scope-dec> } [ <keyword> <scope-dec> ]
 <while>         ::= <keyword> <bool> <scope-dec>

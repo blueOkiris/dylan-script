@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace dylanscript {
     partial class Parser {
+        // <struct> ::= <keyword> <name> <struct-body>
         private static CompoundToken parseStruct(
                 ref int i, SymbolToken[] tokens) {
             i++;
@@ -29,6 +30,8 @@ namespace dylanscript {
             );
         }
 
+        // <func-def> ::= <keyword> <name> <parenth> [ <def-arg-body> ]
+        //                  <parenth> <ret-deref-op> <type-name> <scope-dec>
         private static CompoundToken parseFuncDef(
                 ref int i, SymbolToken[] tokens) {
             i++;
@@ -124,6 +127,7 @@ namespace dylanscript {
             return new CompoundToken(TokenType.FuncDef, children.ToArray());
         }
 
+        // <import> ::= <keyword> <ident>
         private static CompoundToken parseImport(
                 ref int i, SymbolToken[] tokens) {
             i++;
@@ -138,6 +142,7 @@ namespace dylanscript {
             return new CompoundToken(TokenType.Import, new Token[1] { ident });
         }
 
+        // <program> ::= { ( <import> | <struct> | <func-def> ) }
         public static CompoundToken BuildProgram(SymbolToken[] tokens) {
             var instructions = new List<Token>();
 

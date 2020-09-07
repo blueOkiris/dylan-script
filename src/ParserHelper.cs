@@ -5,32 +5,32 @@ namespace dylanscript {
     partial class Parser {
         private static CompoundToken parseWhile(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.While, new Token[0] {});
         }
 
         private static CompoundToken parseIf(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.If, new Token[0] {});
         }
 
         private static CompoundToken parseAssignment(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.Assignment, new Token[0] {});
         }
 
         private static CompoundToken parseStmt(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.Stmt, new Token[0] {});
         }
 
         private static CompoundToken parseScopeDec(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.ScopeDec, new Token[0] {});
         }
 
         private static CompoundToken parseDefArgBody(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.DefArgBody, new Token[0] {});
         }
 
         private static CompoundToken parseNumber(
@@ -40,64 +40,129 @@ namespace dylanscript {
 
         private static CompoundToken parseFuncCall(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.FuncCall, new Token[0] {});
         }
 
         private static CompoundToken parseBool(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.Bool, new Token[0] {});
         }
 
         private static CompoundToken parseMapBody(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.MapBody, new Token[0] {});
         }
 
         private static CompoundToken parseMap(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.Map, new Token[0] {});
         }
 
         private static CompoundToken parseListBody(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.ListBody, new Token[0] {});
         }
 
         private static CompoundToken parseTypeName(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.TypeName, new Token[0] {});
         }
 
         private static CompoundToken parseList(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.List, new Token[0] {});
         }
 
         private static CompoundToken parseTerm(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.Term, new Token[0] {});
         }
 
         private static CompoundToken parsePowExpr(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.PowExp, new Token[0] {});
         }
 
         private static CompoundToken parseMulExpr(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.MulExp, new Token[0] {});
         }
 
         private static CompoundToken parseExpr(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            return new CompoundToken(TokenType.Expr, new Token[0] {});
         }
 
+        // <declaration> ::= <name> <type-op> <type-name> [ <asgn-op> <expr> ]
         private static CompoundToken parseDeclaration(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            if(tokens[i].Type != TokenType.Name) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Expected name in declaration in struct at line "
+                    + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
+                );
+            }
+            var name = tokens[i];
+
+            i++;
+            if(i >= tokens.Length) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Unexpected EOF at line " + tokens[i - 1].Line
+                    + ", pos " + tokens[i - 1].Pos + "."
+                );
+            }
+            if(tokens[i].Type != TokenType.TypeOp) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Expected ':' in declaration in struct at line "
+                    + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
+                );
+            }
+            var typeOp = tokens[i];
+
+            i++;
+            if(i >= tokens.Length) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Unexpected EOF at line " + tokens[i - 1].Line
+                    + ", pos " + tokens[i - 1].Pos + "."
+                );
+            }
+            var type = parseTypeName(ref i, tokens);
+
+            SymbolToken asgnOp = null;
+            CompoundToken asgnExpr = null;
+            if(i + 1 < tokens.Length && tokens[i].Type == TokenType.AsgnOp) {
+                i++;
+                asgnOp = tokens[i];
+
+                i++;
+                if(i >= tokens.Length) {
+                    throw new Exception(
+                        "Parser Error: "
+                        + "Unexpected EOF at line " + tokens[i - 1].Line
+                        + ", pos " + tokens[i - 1].Pos + "."
+                    );
+                }
+                asgnExpr = parseExpr(ref i, tokens);
+            }
+
+            var children = new List<Token>();
+            children.Add(name);
+            children.Add(typeOp);
+            children.Add(type);
+
+            if(asgnOp != null) {
+                children.Add(asgnOp);
+                children.Add(asgnExpr);
+            }
+
+            return new CompoundToken(TokenType.Declaration, children.ToArray());
         }
 
+        // <struct-body> ::= <brace> { ( <declaration> ) <semi> } <brace>
         private static CompoundToken parseStructBody(
                 ref int i, SymbolToken[] tokens) {
             if(tokens[i].Type != TokenType.Brace
@@ -132,6 +197,23 @@ namespace dylanscript {
                         + ", pos " + tokens[i - 1].Pos + "."
                     );
                 }
+                if(tokens[i].Type != TokenType.Semi) {
+                    throw new Exception(
+                        "Parser Error: "
+                        + "Expected '{' after struct name at line "
+                        + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
+                    );
+                }
+                declares.Add(tokens[i]);
+                
+                i++;
+                if(i >= tokens.Length) {
+                    throw new Exception(
+                        "Parser Error: "
+                        + "Unexpected EOF at line " + tokens[i - 1].Line
+                        + ", pos " + tokens[i - 1].Pos + "."
+                    );
+                }
             }
             var rbrace = tokens[i];
 
@@ -145,6 +227,7 @@ namespace dylanscript {
             return new CompoundToken(TokenType.StructBody, children.ToArray());
         }
 
+        // <ident> ::= name [ <member-op> <ident> ] | <expr> <member-op> <ident>
         private static CompoundToken parseIdent(
                 ref int i, SymbolToken[] tokens) {
 

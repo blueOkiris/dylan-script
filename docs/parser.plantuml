@@ -115,7 +115,7 @@ namespace InputLayer {
 
 namespace OutputLayer {
     class Compiler {
-        + {static} Translate(ast : CompoundToken) : string
+        + {static} Translate(ast : CompoundToken) : byte[]
     }
 
     class Parser {

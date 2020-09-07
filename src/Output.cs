@@ -176,8 +176,8 @@ namespace dylanscript {
     }
 
     class Compiler {
-        public static string Translate(CompoundToken ast) {
-            return "";
+        public static byte[] Translate(CompoundToken ast) {
+            return new byte[0] {};
         }
     }
 }

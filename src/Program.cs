@@ -31,7 +31,6 @@ namespace dylanscript {
                     Console.WriteLine(token);
                 }
             }
-
             try {
                 var ast = Parser.BuildProgram(tokens);
                 Console.WriteLine(ast);

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace dylanscript {
     partial class Parser {
         private static CompoundToken parseWhile(
@@ -102,7 +105,44 @@ namespace dylanscript {
 
         private static CompoundToken parseIdent(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+
+            var children = new List<Token>();
+                       
+            if(tokens[i].Type == TokenType.Name) {
+                children.Add(tokens[i]);
+
+                if(i + 1 < tokens.Length 
+                        && tokens[i].Type == TokenType.MemberOp) {
+                    i++;
+                    children.Add(tokens[i]);
+                    i++;
+                    children.Add(parseIdent(ref i, tokens));
+                }
+            } else {
+                int identI = i;
+                children.Add(parseExpr(ref i, tokens));
+
+                if(i + 1 >= tokens.Length) {
+                    throw new Exception(
+                        "Parser Error: "
+                        + "Unexpected EOF at identifier definition at line "
+                        + tokens[identI].Line + ", pos " + tokens[identI].Pos
+                        + "."
+                    );
+                } else if(tokens[i].Type != TokenType.MemberOp) {
+                    throw new Exception(
+                        "Parser Error: "
+                        + "Expected member op to convert expression into "
+                        + "identifier at line " + tokens[identI].Line + ", pos "
+                        + tokens[identI].Pos + "."
+                    );
+                }
+                children.Add(tokens[i]);
+                i++;
+                children.Add(parseIdent(ref i, tokens));
+            }
+
+            return new CompoundToken(TokenType.Ident, children.ToArray());
         }
     }
 }

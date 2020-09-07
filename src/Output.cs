@@ -15,7 +15,16 @@ namespace dylanscript {
 
         private static CompoundToken parseImport(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            i++;
+            if(i >= tokens.Length) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Unexpected EOF at line " + tokens[i - 1].Line
+                    + ", pos " + tokens[i - 1].Pos + "."
+                );
+            }
+            var ident = parseIdent(ref i, tokens);
+            return new CompoundToken(TokenType.Import, new Token[1] { ident });
         }
 
         public static CompoundToken BuildProgram(SymbolToken[] tokens) {

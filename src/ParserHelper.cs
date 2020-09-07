@@ -121,6 +121,9 @@ namespace dylanscript {
             var declares = new List<Token>();
             while(tokens[i].Type != TokenType.Brace
                     || tokens[i].Source != "}") {
+                var declare = parseDeclaration(ref i, tokens);
+                declares.Add(declare);
+                
                 i++;
                 if(i >= tokens.Length) {
                     throw new Exception(

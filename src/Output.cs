@@ -42,7 +42,7 @@ namespace dylanscript {
             if(tokens[i].Type != TokenType.Name) {
                 throw new Exception(
                     "Parser Error: "
-                    + "Expected new name after keyword 'struct' at line "
+                    + "Expected new name after keyword 'fn' at line "
                     + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
                 );
             }
@@ -60,7 +60,7 @@ namespace dylanscript {
                     || tokens[i].Source != "(") {
                 throw new Exception(
                     "Parser Error: "
-                    + "Expected new name after keyword 'struct' at line "
+                    + "Expected '(' after function name at line "
                     + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
                 );
             }
@@ -84,7 +84,7 @@ namespace dylanscript {
                     || tokens[i].Source != ")") {
                 throw new Exception(
                     "Parser Error: "
-                    + "Expected new name after keyword 'struct' at line "
+                    + "Expected ')' after function arg list at line "
                     + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
                 );
             }
@@ -101,7 +101,7 @@ namespace dylanscript {
             if(tokens[i].Type != TokenType.RetDerefOp) {
                 throw new Exception(
                     "Parser Error: "
-                    + "Expected new name after keyword 'struct' at line "
+                    + "Expected '->' before return type at line "
                     + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
                 );
             }
@@ -159,9 +159,19 @@ namespace dylanscript {
                         + "."
                     );
                 }
+
+                if(SettingsManager.Instance().State().Debug) {
+                    var prog = new CompoundToken(
+                        TokenType.Program, instructions.ToArray()
+                    );
+                    Console.WriteLine(prog);
+                }
             }
-            
-            return new CompoundToken(TokenType.Program, instructions.ToArray());
+
+            var program = new CompoundToken(
+                TokenType.Program, instructions.ToArray()
+            );
+            return program;
         }
     }
 

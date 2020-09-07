@@ -100,7 +100,46 @@ namespace dylanscript {
 
         private static CompoundToken parseStructBody(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            if(tokens[i].Type != TokenType.Brace
+                    || tokens[i].Source != "{") {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Expected '{' after struct name at line "
+                    + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
+                );
+            }
+            var lbrace = tokens[i];
+
+            i++;
+            if(i >= tokens.Length) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Unexpected EOF at line " + tokens[i - 1].Line
+                    + ", pos " + tokens[i - 1].Pos + "."
+                );
+            }
+            var declares = new List<Token>();
+            while(tokens[i].Type != TokenType.Brace
+                    || tokens[i].Source != "}") {
+                i++;
+                if(i >= tokens.Length) {
+                    throw new Exception(
+                        "Parser Error: "
+                        + "Unexpected EOF at line " + tokens[i - 1].Line
+                        + ", pos " + tokens[i - 1].Pos + "."
+                    );
+                }
+            }
+            var rbrace = tokens[i];
+
+            var children = new List<Token>();
+            children.Add(lbrace);
+            foreach(var dec in declares) {
+                children.Add(dec);
+            }
+            children.Add(rbrace);
+
+            return new CompoundToken(TokenType.StructBody, children.ToArray());
         }
 
         private static CompoundToken parseIdent(

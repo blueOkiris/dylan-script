@@ -73,17 +73,19 @@ namespace dylanscript {
         private string toString(CompoundToken token, int tabInd = -1) {
             var tokenStr = new StringBuilder();
             if(token.Type == TokenType.Program) {
-                tokenStr.Append("Program:");
+                tokenStr.Append("Program:\n");
             } else {
                 for(int i = 0; i < tabInd; i++) {
                     tokenStr.Append("|--");
                 }
-                tokenStr.Append(Type);
+                tokenStr.Append(token.Type);
+                tokenStr.Append('\n');
             }
             foreach(var child in token.Children) {
                 if(!(child is CompoundToken)) {
                     tokenStr.Append("|--");
                     tokenStr.Append(child.ToString());
+                    tokenStr.Append('\n');
                 } else {
                     tokenStr.Append(
                         toString(child as CompoundToken, tabInd + 1)

@@ -33,10 +33,18 @@ namespace dylanscript {
             }
             try {
                 var ast = Parser.BuildProgram(tokens);
-                Console.WriteLine(ast);
+                if(settings.Debug) {
+                    Console.WriteLine(ast);
+                }
 
                 var newCode = Compiler.Translate(ast);
-                Console.WriteLine(newCode);
+                if(settings.Debug) {
+                    Console.WriteLine('{');
+                    foreach(var bt in newCode) {
+                        Console.WriteLine(bt);
+                    }
+                    Console.WriteLine('}');
+                }
             } catch(Exception e) {
                 Console.WriteLine(e.Message);
                 Environment.Exit(-1);

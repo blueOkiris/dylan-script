@@ -38,7 +38,7 @@
                 | <sum-op> <term> | ( <sum-op> | <ret-deref-op> | <ref-op> ) <term>
 <pow-exp>       ::= <pow-exp> | term { <exp-op> pow-exp }
 <mul-exp>       ::= <pow-exp> { <mul-op> <pow-exp> }
-<expr>          ::= <mul-exp> { <sum-op> <mul-exp> }
+<expr>          ::= <mul-exp> { <sum-op> <mul-exp> } | <expr> <bracket> <expr> <bracket>
 <func-call>     ::= <ident> ( <parenth> [ <list-body> ] <parenth> )
 <declaration>   ::= <ident> <type-op> <type-name> [ <asgn-op> <expr> ]
 <assignment>    ::= <ident> <asgn-op>  <expr> | <parenth> <expr> <parenth> 

@@ -2,11 +2,11 @@ import io
 
 struct Test {
     text : str;
-    num : num;
+    val : num;
 }
 
 fn main() -> null {
     x : Test := Test('Hello, world!', 2)
     io.print(x.str);
-    io.print(x.num);
+    io.print(x.val);
 }

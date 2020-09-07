@@ -6,7 +6,7 @@ struct Test {
 }
 
 fn main() -> null {
-    x : Test := { 'Hello, world!', 2 }
+    x : Test := Test('Hello, world!', 2)
     io.print(x.str);
     io.print(x.num);
 }

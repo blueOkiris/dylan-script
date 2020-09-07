@@ -30,4 +30,10 @@ namespace dylanscript {
             );
         }
     }
+
+    class Compiler {
+        public static string Translate(CompoundToken ast) {
+            return "";
+        }
+    }
 }

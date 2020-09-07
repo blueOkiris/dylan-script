@@ -114,6 +114,10 @@ namespace InputLayer {
 }
 
 namespace OutputLayer {
+    class Compiler {
+        + {static} Translate(ast : CompoundToken) : string
+    }
+
     class Parser {
         - {static} parseWhile(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
         - {static} parseIf(ref i : int, tokens : SymbolToken[]) : (int, CompoundToken)
@@ -149,6 +153,7 @@ Program --> InputLayer.SettingsManager
 Program --> InputLayer.CodeReader
 Program --> InputLayer.Lexer
 Program ---> OutputLayer.Parser
+Program ---> OutputLayer.Compiler
 InputLayer.Lexer .d.> DataLayer.SymbolToken
 OutputLayer.Parser .d.> DataLayer.CompoundToken
 

@@ -5,7 +5,28 @@ namespace dylanscript {
     partial class Parser {
         private static CompoundToken parseStruct(
                 ref int i, SymbolToken[] tokens) {
-            return new CompoundToken(TokenType.Program, new Token[0] {});
+            i++;
+            if(i >= tokens.Length) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Unexpected EOF at line " + tokens[i - 1].Line
+                    + ", pos " + tokens[i - 1].Pos + "."
+                );
+            }
+            if(tokens[i].Type != TokenType.Name) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Expected new name after keyword 'struct' at line "
+                    + tokens[i].Line + ", pos: " + tokens[i].Pos + "."
+                );
+            }
+            var name = tokens[i];
+            i++;
+            var body = parseStructBody(ref i, tokens);
+
+            return new CompoundToken(
+                TokenType.Struct, new Token[2] { name, body }
+            );
         }
 
         private static CompoundToken parseFuncDef(

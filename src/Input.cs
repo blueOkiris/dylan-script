@@ -93,7 +93,7 @@ namespace dylanscript {
             { "'(\\\\.|[^'\\\\])*'", TokenType.String },
             { ":=", TokenType.AsgnOp }, { ":", TokenType.TypeOp },
             { "#", TokenType.RefOp },
-            { "([<>]=*)|(~=)|=", TokenType.CondOp },
+            { "([<>]=?)|(~=)|=", TokenType.CondOp },
             { "~", TokenType.NotOp }, { "->", TokenType.RetDerefOp },
             { "[+-]", TokenType.SumOp }, { "[*\\/%]", TokenType.MulOp },
             { "\\^", TokenType.ExpOp },

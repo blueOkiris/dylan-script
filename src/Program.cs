@@ -32,11 +32,16 @@ namespace dylanscript {
                 }
             }
 
-            var ast = Parser.BuildProgram(tokens);
-            Console.WriteLine(ast);
+            try {
+                var ast = Parser.BuildProgram(tokens);
+                Console.WriteLine(ast);
 
-            var newCode = Compiler.Translate(ast);
-            Console.WriteLine(newCode);
+                var newCode = Compiler.Translate(ast);
+                Console.WriteLine(newCode);
+            } catch(Exception e) {
+                Console.WriteLine(e.Message);
+                Environment.Exit(-1);
+            }
         }
     }
 }

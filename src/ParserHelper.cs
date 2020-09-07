@@ -1,171 +1,108 @@
 namespace dylanscript {
     partial class Parser {
-        private static (int, CompoundToken) parseWhile(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseWhile(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseIf(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseIf(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseAssignment(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseAssignment(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseStmt(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseStmt(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseScopeDec(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseScopeDec(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseDefArgBody(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseDefArgBody(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseNumber(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseNumber(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseFuncCall(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseFuncCall(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseBool(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseBool(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseMapBody(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseMapBody(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseMap(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseMap(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseListBody(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseListBody(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseTypeName(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseTypeName(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseList(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseList(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseTerm(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseTerm(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parsePowExpr(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parsePowExpr(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseMulExpr(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseMulExpr(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseExpr(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseExpr(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseDeclaration(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseDeclaration(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseStructBody(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseStructBody(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
 
-        private static (int, CompoundToken) parseIdent(
-                ref int i, Token[] tokens) {
-            return (
-                0,
-                new CompoundToken(TokenType.Program, new CompoundToken[0] {})
-            );
+        private static CompoundToken parseIdent(
+                ref int i, SymbolToken[] tokens) {
+            return new CompoundToken(TokenType.Program, new Token[0] {});
         }
     }
 }

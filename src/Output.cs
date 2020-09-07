@@ -110,6 +110,14 @@ namespace dylanscript {
             }
             var retOp = tokens[i];
 
+            i++;
+            if(i >= tokens.Length) {
+                throw new Exception(
+                    "Parser Error: "
+                    + "Unexpected EOF at line " + tokens[i - 1].Line
+                    + ", pos " + tokens[i - 1].Pos + "."
+                );
+            }
             var type = parseTypeName(ref i, tokens);
             var body = parseScopeDec(ref i, tokens);
 

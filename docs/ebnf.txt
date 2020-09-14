@@ -44,8 +44,8 @@
 <assignment>    ::= <ident> <asgn-op>  <expr> | <parenth> <expr> <parenth> 
 <if>            ::= <keyword> <bool> <scope-dec> { <keyword> <bool> <scope-dec> } [ <keyword> <scope-dec> ]
 <while>         ::= <keyword> <bool> <scope-dec>
-<stmt>          ::= <scope-dec> | ( <declaration> | <assignment> | <func-call> | <if> | <import> | <func-def> ) ';'
-<scope-dec>     ::= <brace> { <stmt> } <brace>
+<stmt>          ::= <scope-dec> | ( <declaration> | <assignment> | <func-call> | <if> | <import> | <func-def> )
+<scope-dec>     ::= <brace> { <stmt> <semi> } <brace>
 <struct-body>   ::= <brace> { ( <declaration> ) <semi> } <brace>
 <def-arg-body>  ::= <name> <type-op> <type-name> { <comma> <name> <type-op> <type-name> }
 

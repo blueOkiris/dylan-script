@@ -131,3 +131,5 @@ func myFunction(const a : num := 0, var b : num, ref var c : str) -> str {
  - For instance, comments will be C-like
 
  - This document is not comprehensive, but instead a place for me to work out ideas, so take it with a grain of salt.
+
+ - Also, commas and semi-colons and whitespace and stuff aren't needed because (hopefully) my lexer and parser will be good enough

@@ -3,7 +3,7 @@ cont test {
     n : num
 }
 
-func incNumInTest(var t : ref test) -> none {
+func incNumInTest(ref var t : test) -> none {
     test.n++
 }
 

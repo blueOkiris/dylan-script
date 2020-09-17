@@ -115,7 +115,7 @@ cont myContainer {
     a : num := 0
     b : num
     c : str
-    d : list<num> := [ 0, 1, 2 ]
+    d : list<num> := [ 0 1 2 ]
 }
 
 func myFunction(const a : num := 0, var b : num, ref var c : str) -> str {

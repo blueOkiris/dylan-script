@@ -28,6 +28,8 @@ A small scripting language that I hope to grow into something larger
 
  - API to connect machine code to interpreted code for expanding system
 
+ - "Better" python with types
+
 ## Running
 
 `make` - Builds the interpreter

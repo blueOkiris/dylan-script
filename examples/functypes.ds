@@ -1,0 +1,7 @@
+func main() -> none {
+    const callPrint := func(const x : string) {
+        print(x)
+    }
+
+    callPrint('Hello, world!')
+}

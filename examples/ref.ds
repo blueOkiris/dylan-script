@@ -1,0 +1,15 @@
+cont test {
+    s : str := 'Hello'
+    n : num
+}
+
+func incNumInTest(var t : ref test) -> none {
+    test.n++
+}
+
+func main() -> none {
+    var t := test { n := 0 }
+    print(t)
+    incNumInTest(ref t)
+    print(t)
+}

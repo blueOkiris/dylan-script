@@ -30,10 +30,6 @@ A small scripting language that I hope to grow into something larger
 
 ## Running
 
-`dotnet run dylan-script <filename>`
+`make` - Builds the interpreter
 
-## Planning
-
-Here's a class diagram of the planned Parser:
-
-![parser class diagram](./docs/parser-class.png)
+`dyl <filename>` - Runs the program <filename>
